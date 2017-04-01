@@ -2,10 +2,11 @@
 :sleeping: Minit IT Project
 
 
-| Task        | Responsibility  
-| ------------- |:-------------:|
-| Registration  | General Prev Wong |
-| Login      | 2      |
-| Create/Edit Quiz | Ong Teh Ais & General Prev   |
-| User performance | Nicholas |
-| Run the quiz | 2 |
+| Task        | Responsibility  | Completed |
+| ------------- |:-------------:|:---------------:|
+| Registration  | General Prev Wong|
+| Login      | 2 | |
+| Create/Edit Quiz | Ong Teh Ais | |
+| User performance | Nicholas | |
+| Answering the quiz | July Hao | |
+
