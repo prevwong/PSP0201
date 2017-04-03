@@ -1,5 +1,5 @@
 # PSP0201
-:sleeping: Minit IT Project
+:sleeping: Mini IT Project
 
 
 | Task        | Responsibility  | Completed |
