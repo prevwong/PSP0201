@@ -6,7 +6,7 @@
 | ------------- |:-------------:|:---------------:|
 | Registration  | General Prev Wong|
 | Login      | 2 | |
-| Create/Edit Quiz | Ong Teh Ais | |
+| Create/Edit Quiz | :fire: Ong Teh Panas | |
 | User performance | Nicholas | |
 | Answering the quiz | July Hao | |
 
