@@ -4,9 +4,9 @@
 
 | Task        | Responsibility  | Completed |
 | ------------- |:-------------:|:---------------:|
-| Registration  | General Prev Wong|
-| Login      | 2 | |
+| Registration  | :sunglasses: General Prev Wong|
+| Login      | :rage2: 2 | |
 | Create/Edit Quiz | :fire: Ong Teh Panas | |
-| User performance | Nicholas | |
-| Answering the quiz | July Hao | |
+| User performance | :cop: Nicholas | |
+| Answering the quiz | :woman: July Hao | |
 
