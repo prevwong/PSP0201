@@ -16,3 +16,11 @@ users[1]["id"] = "11611012345"
 jsonData = json.dumps(users)
 
 print jsonData
+
+import urllib2
+import requests
+
+url = 'http://revcta.betasight.co/ourapi/test.gif'
+
+test = requests.post(url)
+print test
