@@ -1,4 +1,4 @@
 from modules import user
+from modules import quiz
 
-
-user.login("2", "3");
+quiz.retrieve("3", "11", "3")
