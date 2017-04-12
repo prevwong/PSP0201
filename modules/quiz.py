@@ -4,9 +4,9 @@ import methods
 import random
 
 answers = [];
-def retrieve(category, quantity):
-	global answers
-	url = "https://opentdb.com/api.php?amount="+ quantity +"&category=" + category
+
+def retrieve(user_id, category, quantity):
+	url = "https://opentdb.com/api.php?amount="+ str(quantity) +"&category=11"
 	response = urllib.urlopen(url)
 	jsonData = json.loads(response.read())
 	results = jsonData["results"]
