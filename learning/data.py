@@ -12,6 +12,9 @@ users[1]["name"] = "Wei Long"
 users[1]["type"] = "Bartender"
 users[1]["id"] = "11611012345"
 
+new_id = len(users)
+users[new_id] = {}
+users[new_id]["name"] = "John"
 
 jsonData = json.dumps(users)
 
