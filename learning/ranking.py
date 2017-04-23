@@ -78,4 +78,6 @@ def sort_by_weeklyexp(users):
 
 
     
-print sort_by_exp(users)
+haha = sort_by_exp(users)
+for user in haha:
+    print user
