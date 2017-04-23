@@ -4,9 +4,9 @@
 
 | Task        | Responsibility  | Completed |
 | ------------- |:-------------:|:---------------:|
-| Quiz  | :sunglasses: General Prev Wong| :bikini: :bikini: |
-| Profile      | :rage2: 2 Pen Mai | |
-| Registation | :fire: Ong Teh Panas | |
-| Login & UI | :cop: Nicholas | |
+| Quiz  | :sunglasses: Previnash Wong Ah Chuan | :bikini: :bikini: |
+| Profile      | :rage2: Too :rage2: | |
+| Registation | :fire: Ong Teh Tarik Panas Kurang Manis | |
+| Login & UI | :cop: salohciN :bikini: Nicholas | |
 | Quiz | :woman: July Hao | |
 
