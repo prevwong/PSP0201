@@ -4,7 +4,7 @@
 
 | Task        | Responsibility  | Completed |
 | ------------- |:-------------:|:---------------:|
-| Quiz  | :sunglasses: General Prev Wong|
+| Quiz  | :sunglasses: General Prev Wong| :bikini: :bikini: |
 | Profile      | :rage2: 2 Pen Mai | |
 | Registation | :fire: Ong Teh Panas | |
 | Login & UI | :cop: Nicholas | |
