@@ -2,7 +2,6 @@ from Tkinter import *
 import json
 import threading  
 
-
 class Profile(Frame):
     """Profile Gui"""
     #########################################
@@ -27,6 +26,17 @@ class Profile(Frame):
         Frame.__init__(self, master)
         self.filename = datafilename;
         self.ReadData();
+        self.InitElement();
+        self.ShowElement();
+        #########################################
+        # Other
+        #########################################
+        # Animate the profile pic to move
+        self.Animate(self.profile_pic,self.PROFILE_PIC_LINK,self.GetFrame(self.PROFILE_PIC_LINK),0.06);
+        self.pack();
+
+    def InitElement(self):
+        """To Initializating the element """
         #########################################
         # Text Initializating Start here
         #########################################
@@ -34,11 +44,9 @@ class Profile(Frame):
         name = self.data['user1']['username'];
         level = self.data['user1']['level'];
         description = self.data['user1']['description'];
-
         # Create Name text and descption text
         self.NameLabel = Label(self,text = name + " Lvl " + level + "",font = ("Arial",14),anchor = W);
-        self.DesLabel = Label(self,text = description,font = ("Arial",11),justify = LEFT,wraplength = 640);
-
+        self.DesLabel = Label(self,text = description,font = ("Arial",11),justify = LEFT,wraplength = 540);
         #########################################
         # Profile Picture Initializating Start here
         #########################################
@@ -49,6 +57,8 @@ class Profile(Frame):
         # Create profile picture
         self.profile_pic = Label(self, image = self.img,bg = "white",height = self.img.height(),width = self.img.width());
 
+    def ShowElement(self):
+        """To show and position the element"""
         #########################################
         # Position Part
         #########################################
@@ -58,14 +68,7 @@ class Profile(Frame):
         self.rowconfigure(1, weight=1);
         self.profile_pic.grid(row = 0,column = 0,sticky = W,pady = 10,padx = 10);
         self.NameLabel.grid(row = 0,column = 1,pady = 10,padx = 10);
-        self.DesLabel.grid(row = 1,column = 0,columnspan = 2,sticky = W, padx = 5, pady = 10);
-
-        #########################################
-        # Other
-        #########################################
-        # Animate the profile pic to move
-        self.Animate(self.profile_pic,self.PROFILE_PIC_LINK,self.GetFrame(self.PROFILE_PIC_LINK),0.06);
-        self.pack();
+        self.DesLabel.grid(row = 1,column = 0,columnspan = 2,sticky = W, padx = 10, pady = 10);
 
     def ReadData(self):
         """To Read the data from json file"""
