@@ -115,6 +115,9 @@ def Animate(object,filename,speed = 0.08):
         except:
             print "";
 
+def RandomQues():
+    print(31);
+
 def SaveDes():
     """Get the description from box and write it into the file"""
     global DesLabel;
@@ -164,6 +167,7 @@ def ShowWindow(root):
     # Insert Previous Data
     DesLabel.insert(INSERT,description);
     SaveDesButton = Button(root,text = "Save",command = SaveDes);
+    RandomQuesButton = Button(root,text = "Get a Random Question",command = RandomQues);
 
     #########################################
     # Profile Picture Initializating Start here
@@ -190,6 +194,7 @@ def ShowWindow(root):
     DesTitleLabel.grid(row = 2,column = 0,padx = 10,sticky = W);
     DesLabel.grid(row = 3,column = 0,padx = 10,pady = 10);
     SaveDesButton.grid(row = 3,column = 1,sticky = W);
+    RandomQuesButton.grid(row = 4,column = 0,sticky = W);
 
     #########################################
     ## Animate Profile Pic Start Here
