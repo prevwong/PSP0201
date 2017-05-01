@@ -28,13 +28,13 @@ RegPass = Label(RegWindow,text="Password: ",bg=FrameColor,font="Arial")
 Password2 = Entry(RegWindow,show="*")
 RegWindow.withdraw()
 
-data = 0
 users = {}
-users[0] = {}
-
+new_id = len(users)
 def Submit():
-	users[0]["Username"]=Username2.get()
-	users[0]["Password"]=Password2.get()
+	new_id = len(users)
+	users[new_id] = {}
+	users[new_id]["Username"]=Username2.get()
+	users[new_id]["Password"]=Password2.get()
 	with open ("save.json","w") as save:
 		json.dump(users,save)
 	print users
@@ -50,13 +50,15 @@ def Register():
 	
 def Login(): 
 	with open ("save.json","r") as save:
-		json.load(save)
-	if users[0]["Username"] == Username1.get() and users[0]["Password"]==Password1.get():
-		tkMessageBox.showinfo("Done","Login Successfully!")
-		Profile.deiconify()
-		LogWindow.withdraw()
-	else:
-		tkMessageBox.showerror("Error","Please Try Again!")
+		raw_file =json.load(save)
+		users = json.loads(raw_file)
+	for i in range(0,len(users)):
+		if users[new_id]["Username"] == Username1.get() and users[new_id]["Password"]==Password1.get():
+			tkMessageBox.showinfo("Done","Login Successfully!")
+			Profile.deiconify()
+			LogWindow.withdraw()
+		else:
+			tkMessageBox.showerror("Error","Please Try Again!")
 		
 #Profile Window
 Profile = Tk()
