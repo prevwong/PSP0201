@@ -47,11 +47,14 @@ def Back():
 def Register():
     RegWindow.deiconify()
     LogWindow.withdraw()
+
+def combineFunction():
+	Submit()
+	Back()
 	
 def Login(): 
 	with open ("save.json","r") as save:
-		raw_file =json.load(save)
-		users = json.loads(raw_file)
+		json.load(save)
 	for i in range(0,len(users)):
 		if users[new_id]["Username"] == Username1.get() and users[new_id]["Password"]==Password1.get():
 			tkMessageBox.showinfo("Done","Login Successfully!")
@@ -68,8 +71,8 @@ Profile.withdraw()
 #Button
 ButtonColor = "light green"
 
-submitButton = Button (RegWindow,text = "    Submit    ",command=Submit,bg="Pink",activebackground = "white",activeforeground ="black")
-backButton=Button(RegWindow,text ="    Back    ",command=Back,bg=ButtonColor,activebackground = "white",activeforeground ="black")
+submitButton = Button (RegWindow,text = "    Submit    ",command=combineFunction,bg="Pink",activebackground = "white",activeforeground ="black")
+#backButton=Button(RegWindow,text ="    Back    ",command=Back,bg=ButtonColor,activebackground = "white",activeforeground ="black")
 registerButton=Button(LogWindow,text="    Register    ",command=Register,bg=ButtonColor,activebackground = "white",activeforeground="black")
 loginButton = Button(LogWindow,text = "    Login    ",command=Login,bg="Pink",activebackground = "white",activeforeground="black")
 
@@ -95,7 +98,7 @@ Username2.grid(row=2,column=4)
 RegPass.grid(row=3,column=3)
 Password2.grid(row=3,column=4)
 submitButton.grid(row=5,column=3)
-backButton.grid(row=5,column=4)
+#backButton.grid(row=5,column=4)
 
 
 LogWindow.mainloop()
