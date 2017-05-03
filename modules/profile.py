@@ -116,7 +116,13 @@ def Animate(object,filename,speed = 0.08):
             print "";
 
 def RandomQues():
-    print(31);
+    print("Random Question");
+
+def Play():
+    print("Play");
+
+def Ranking():
+    print("Ranking");
 
 def SaveDes():
     """Get the description from box and write it into the file"""
@@ -163,11 +169,14 @@ def ShowWindow(root):
     TitleLabel = Label(root,text = "Profile",font = ("Arial",22),anchor = W); 
     NameLabel = Label(root,text = name + " Lvl " + level + "",font = ("Arial",14),anchor = W);
     DesTitleLabel = Label(root,text = "Description",font = ("Arial",10),anchor = W);
-    DesLabel = Text(root,font = ("Arial",11),width = 65, height = 4);
+    DesLabel = Text(root,font = ("Arial",11),width = 60, height = 4);
     # Insert Previous Data
     DesLabel.insert(INSERT,description);
+    # Create Button
     SaveDesButton = Button(root,text = "Save",command = SaveDes);
     RandomQuesButton = Button(root,text = "Get a Random Question",command = RandomQues);
+    PlayButton = Button(root,text = "Play Now!",command = Play);
+    RankingButton = Button(root,text = "View Ranking",command = Ranking);
 
     #########################################
     # Profile Picture Initializating Start here
@@ -183,18 +192,27 @@ def ShowWindow(root):
     # Position Part
     #########################################
     # Place label on suitable position
-    # root.rowconfigure(0, weight=1);
-    # root.rowconfigure(1, weight=1);
-    # root.rowconfigure(2, weight=1);
-    # root.rowconfigure(3, weight=2);
+    root.rowconfigure(0, weight=1);
+    root.rowconfigure(1, weight=1);
+    root.rowconfigure(2, weight=1);
+    root.rowconfigure(3, weight=1);
+    root.rowconfigure(4, weight=1);
 
-    TitleLabel.grid(row = 0,column = 0,ipady = 10,ipadx = 10,padx = 10,pady = 10,columnspan = 2);
-    NameLabel.grid(row = 1,column = 0,ipady = 10,ipadx = 10,padx = 10,pady = 10,sticky = E,columnspan = 2);
-    profile_pic.grid(row = 1,column = 0,sticky = W,ipady = 10,ipadx = 10,padx = 10,pady = 20);
-    DesTitleLabel.grid(row = 2,column = 0,padx = 10,sticky = W);
-    DesLabel.grid(row = 3,column = 0,padx = 10,pady = 10);
-    SaveDesButton.grid(row = 3,column = 1,sticky = W);
-    RandomQuesButton.grid(row = 4,column = 0,sticky = W);
+    # Row 0
+    TitleLabel.grid(row = 0,column = 0,ipady = 10,ipadx = 10,padx = 10,pady = 10,columnspan = 3);
+    # Row 1
+    profile_pic.grid(row = 1,column = 0,sticky = W,ipady = 10,ipadx = 10,padx = 30,pady = 20);
+    NameLabel.grid(row = 1,column = 1,ipady = 10,ipadx = 10,padx = 20,pady = 10,sticky = 'ESNW',columnspan = 2);
+    # Row 2
+    DesTitleLabel.grid(row = 2,column = 0,padx = 12,sticky = W,columnspan = 3);
+    # Row 3
+    DesLabel.grid(row = 3,column = 0,padx = 10,columnspan = 2);
+    SaveDesButton.grid(row = 3,column = 2,sticky = 'W');
+    # Row 4
+    PlayButton.grid(row = 4,column = 0,padx = 15,pady = 20,sticky = 'WE');
+    RandomQuesButton.grid(row = 4,column = 1,padx = 15,pady = 20,sticky = 'WE');
+    RankingButton.grid(row = 4,column = 2,padx = 15,pady = 20,sticky = 'WE');
+
 
     #########################################
     ## Animate Profile Pic Start Here
@@ -203,7 +221,6 @@ def ShowWindow(root):
     Animate(profile_pic,PROFILE_PIC_LINK,0.08);
 
     root.mainloop();
-
 
 
 root = Tk();
