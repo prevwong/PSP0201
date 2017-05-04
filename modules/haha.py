@@ -9,6 +9,8 @@ import ttk
 parser = HTMLParser.HTMLParser()
 canvas = "";
 answers = {}
+root = "";
+quest = [];
 
 def on_configure(event):
     # update scrollregion after starting 'mainloop'
@@ -20,7 +22,7 @@ def on_mousescroll(event):
     canvas.yview_scroll( -1 * (event.delta), "units")
 
 def quizUI(user_id, category, number):
-    global canvas, answers;
+    global canvas, answers,root,quest;
 
     root = Tk()
     root.resizable(width=False, height=False)
@@ -43,30 +45,33 @@ def quizUI(user_id, category, number):
     # Retrieve the list of questions 
     questions = retrieve(user_id, category, number)
 
-
     for i in range(0, len(questions)):
         options = questions[i]["options"]
-
-        questionLabel = Label(frame, 
+        temp = [];
+        temp.append(Label(frame, 
           wraplength=500,
           text= parser.unescape(questions[i]["question"]),
           justify = LEFT,
-          padx = 10).pack(side="top", pady=20, anchor=W)
+          padx = 10).pack(side="top", pady=20, anchor=W))
 
         answers[i] = IntVar();
 
         for j in range(0, len(options)):
-            Radiobutton(frame, 
+            temp.append(Radiobutton(frame, 
                         text=parser.unescape(options[j]),
                         padx = 10, 
                         variable=answers[i], 
-                        value=j).pack(side="top", anchor=W)
-        
+                        value=j).pack(side="top", anchor=W))
+        quest.append(temp);
+    
+    print(len(quest[1]) - 1);
+    # quest[0][1].config(color = "red")    
     submitBtn = Button(frame, text ="Submit", command = lambda: calculateResults(questions)).pack(side="right")
         
     # Center Window
     methods.centerWindow(root);
     mainloop()
+    
 
 def retrieve(user_id, category, quantity):
     url = "https://opentdb.com/api.php?amount="+ str(quantity) +"&category=11"
@@ -99,54 +104,35 @@ def retrieve(user_id, category, quantity):
         return questions
 
 def calculateResults(questions):
-    quizUIroot.withdraw()
     correct = 0
     incorrect = []
     for i in range(0, len(questions)):
         correct_answer = questions[i]["correct_answer"]
         selected_answer = answers[i].get()
-
         if ( selected_answer == correct_answer ) :
             print "Correct!"
+
             correct += 1
         else: 
             incorrect.append(i)
             print "Incorrect!"
-            
 
     # Calculate percentage based on the no. of corrects over the no. of questions
     percentage = float(correct) / float(len(questions)) * 100
-    return percentage #what if I delete this?
+    return percentage
 
+def expadder(percentage):
 
-    window = Tk()
-    window.title("Scoreboard")
-    window.geometry("500x400")
-
-    label = ttk.Label(window, text= percentage )
-    label.pack(side='top',pady=50)
-    label.config(font=("Courier", 50))
-
-    def expadder(percentage):
-
-        if percentage == 100:
-            exp = exp + 100
-            return 100
+    if percentage == 100:
+        exp = exp + 100
+        return 100
+    else:
+        if percentage <= 75:
+            exp = exp + 50
+            return 50
         else:
-            if percentage <= 75:
-                exp = exp + 50
-                return 50
-            else:
-                exp = exp + 20
-                return 20         
-        
-
-
-    expgain = ttk.Label(window, text = expadder(percentage))
-    expgain.pack()
-    expgain.config(font=("Courier",30))
-
-    window.mainloop()
+            exp = exp + 20
+            return 20         
     
 quizUI("1","3", "6")
 
