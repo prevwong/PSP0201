@@ -17,17 +17,18 @@ class Profile(Frame):
 	animaterun = True;
 
 	# Get the current directory and dest directory
-	currfilePath = os.path.abspath(__file__);
-	currdir = os.path.abspath(os.path.join(currfilePath,os.pardir)); # this will return current directory in which python file resides.
-	parentDir = os.path.abspath(os.path.join(currdir,os.pardir)); # this will return parent directory.
+	currfilePath = "";	# Initialization in SetPath
+	currdir = "";	# Initialization in SetPath
+	parentDir = "";	# Initialization in SetPath
 
 	#########################################
 	# Constant Variable Start here
 	#########################################
 	PROFILE_HEIGHT = 90;
 	PROFILE_WIDTH = 90;
-	PROFILE_PIC_LINK = parentDir + "/pic/profile.gif";
-	DATAFILEPATH = parentDir + "/data/users.json";
+	PROFILE_PIC_LINK = "";	# Initialization in SetPath
+	DATAFILEPATH = "";	# Initialization in SetPath
+	MAINFOLDER = "tkinter";
 
 	TitleLabel = "";
 	Profile_Pic = "";
@@ -44,8 +45,26 @@ class Profile(Frame):
 	#########################################
 	def __init__(self):
 		"""Class Initializating Function"""
-		Frame.__init__(self)
+		Frame.__init__(self);
+		self.SetPath();
 		self.ReadData();
+
+
+	def SetPath(self):
+		"""Set the path of PROFILE_PIC_LINK and DATAFILEPATH"""
+		# Get Current directory
+		self.currfilePath = os.path.abspath(__file__);
+		self.currdir = os.path.abspath(os.path.join(self.currfilePath,os.pardir));
+		temp = self.currdir;
+
+		# Keep go back to parent until grandfather of the program
+		while (temp.split("\\")[-1] != self.MAINFOLDER):
+			temp = os.path.abspath(os.path.join(temp,os.pardir)); # this will return parent directory.			
+
+		# Initiazation
+		self.parentDir = temp;
+		self.PROFILE_PIC_LINK = self.parentDir + "/pic/profile.gif";
+		self.DATAFILEPATH = self.parentDir + "/data/users.json";
 
 	def ShowWindow(self):
 		"""To Initializating the element """
