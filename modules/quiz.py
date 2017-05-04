@@ -41,7 +41,7 @@ def quizUI():
 	canvas.create_window((0,0), window=frame, anchor='nw')
 
 	# Retrieve the list of questions 
-	questions = retrieve("11", "3", "10")
+	questions = retrieve("11", "9", "10")
 
 
 	for i in range(0, len(questions)):
@@ -53,8 +53,9 @@ def quizUI():
 	      justify = LEFT,
 	      padx = 10).pack(side="top", pady=20, anchor=W)
 
-		answers[i] = IntVar();
-
+		answers[i] = IntVar(master=root);
+		answers[i].set(0);
+		
 		for j in range(0, len(options)):
 			Radiobutton(frame, 
 		                text=parser.unescape(options[j]),
@@ -112,6 +113,6 @@ def calculateResults(questions):
 
 	# Calculate percentage based on the no. of corrects over the no. of questions
 	percentage = float(correct) / float(len(questions)) * 100
-	return percentage
+	print percentage
 
 quizUI();
