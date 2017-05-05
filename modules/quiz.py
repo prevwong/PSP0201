@@ -8,7 +8,6 @@ import ttk
 
 parser = HTMLParser.HTMLParser()
 canvas = "";
-answers = {}
 
 def on_configure(event):
     # update scrollregion after starting 'mainloop'
@@ -16,21 +15,21 @@ def on_configure(event):
     canvas.configure(scrollregion=canvas.bbox('all'))
 
 def on_mousescroll(event):
-    # enable scrolling; defined speed
-    canvas.yview_scroll( -1 * (event.delta), "units")
+	# enable scrolling; defined speed
+	canvas.yview_scroll( -1 * (event.delta), "units")
 
 def quizUI(user_id, category, number):
-    global canvas, answers;
+    global canvas;
 
-    root = Tk()
-    root.resizable(width=False, height=False)
+    window = Tk()
+    window.resizable(width=False, height=False)
 
     # Creating a canvas to allow scrolling
-    canvas = Canvas(root, width=550, height=600)
+    canvas = Canvas(window, width=520, height=600)
     canvas.pack(side=LEFT, padx=30)
 
     # Scrollbar
-    scrollbar = Scrollbar(root, command=canvas.yview)
+    scrollbar = Scrollbar(window, command=canvas.yview)
     scrollbar.pack(side=LEFT, fill='y')
     canvas.configure(yscrollcommand = scrollbar.set)
     canvas.bind('<Configure>', on_configure)
@@ -42,7 +41,7 @@ def quizUI(user_id, category, number):
 
     # Retrieve the list of questions 
     questions = retrieve(user_id, category, number)
-
+    answers = {}
 
     for i in range(0, len(questions)):
         options = questions[i]["options"]
@@ -62,10 +61,10 @@ def quizUI(user_id, category, number):
                         variable=answers[i], 
                         value=j).pack(side="top", anchor=W)
         
-    submitBtn = Button(frame, text ="Submit", command = lambda: calculateResults(questions)).pack(side="right")
+    submitBtn = Button(frame, text ="Submit", command = lambda: completedQuiz(window, questions, answers)).pack(side="right")
         
     # Center Window
-    methods.centerWindow(root);
+    methods.centerWindow(window);
     mainloop()
 
 def retrieve(user_id, category, quantity):
@@ -98,10 +97,14 @@ def retrieve(user_id, category, quantity):
         
         return questions
 
-def calculateResults(questions):
-    quizUIroot.withdraw()
+def completedQuiz(window, questions, answers):
+	window.destroy();
+	calculateResults(questions, answers);
+
+def calculateResults(questions, answers):
     correct = 0
     incorrect = []
+   
     for i in range(0, len(questions)):
         correct_answer = questions[i]["correct_answer"]
         selected_answer = answers[i].get()
@@ -116,37 +119,46 @@ def calculateResults(questions):
 
     # Calculate percentage based on the no. of corrects over the no. of questions
     percentage = float(correct) / float(len(questions)) * 100
-    return percentage #what if I delete this?
+    #return percentage #what if I delete this?
 
 
     window = Tk()
+    window.resizable(width=False, height=False)
     window.title("Scoreboard")
-    window.geometry("500x400")
 
-    label = ttk.Label(window, text= percentage )
-    label.pack(side='top',pady=50)
+    # Creating a canvas to allow scrolling
+    canvas = Canvas(window, width=500, height=400)
+    canvas.pack(side=LEFT, padx=30)
+
+    frame = Frame(canvas, width=500, pady=40);
+    frame.pack(expand=1)
+    canvas.create_window((0,0), window=frame, anchor='nw')
+
+
+    label = Label(frame, text= percentage, anchor="center")
+    label.pack(fill="x", anchor="center")
+
     label.config(font=("Courier", 50))
-
-    def expadder(percentage):
-
-        if percentage == 100:
-            exp = exp + 100
-            return 100
-        else:
-            if percentage <= 75:
-                exp = exp + 50
-                return 50
-            else:
-                exp = exp + 20
-                return 20         
-        
-
-
-    expgain = ttk.Label(window, text = expadder(percentage))
+     
+    expgain = Label(frame, text = expadder(percentage))
     expgain.pack()
     expgain.config(font=("Courier",30))
+    
 
+    methods.centerWindow(window);
     window.mainloop()
     
-quizUI("1","3", "6")
+def expadder(percentage):
+	exp = 0 # replace this by getting the actual value from the user's json
+	if percentage == 100:
+	    exp += 100
+	    return 100
+	else:
+	    if percentage <= 75:
+	        exp += 50
+	        return 50
+	    else:
+	        exp += 20
+	        return 20    
+
 
