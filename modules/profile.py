@@ -28,7 +28,7 @@ class Profile(Frame):
 	PROFILE_WIDTH = 90;
 	PROFILE_PIC_LINK = "";	# Initialization in SetPath
 	DATAFILEPATH = "";	# Initialization in SetPath
-	MAINFOLDER = "tkinter";
+	MAINFOLDER = "PSP0201";
 
 	TitleLabel = "";
 	Profile_Pic = "";

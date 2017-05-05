@@ -57,6 +57,10 @@ def show_ranking():
     
     root = Tk()
     root.title("AskTrivia Leaderboard")
+    root.geometry("320x240")
+    root.rowconfigure(0, weight = 1)
+    root.rowconfigure(1, weight = 1)
+    root.rowconfigure(2, weight = 1)
     tabs = ttk.Notebook(root)
     exp_frame = ttk.Frame(tabs)
     weeklyexp_frame = ttk.Frame(tabs)
@@ -67,7 +71,7 @@ def show_ranking():
     leaderboard_text = Label(root, text = "Leaderboard",
                     font = "Times",
                     fg = "Black")
-    leaderboard_text.grid(row=0)
+    leaderboard_text.grid(row=0, padx = 100)
     
     #Overall ranking
     rank_text = Label(exp_frame, text = "Rank")
