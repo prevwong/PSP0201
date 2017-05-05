@@ -44,7 +44,6 @@ def quizUI(user_id, category, number):
 
     # Retrieve the list of questions 
     questions = retrieve(user_id, category, number)
-
     for i in range(0, len(questions)):
         options = questions[i]["options"]
         temp = [];
@@ -52,7 +51,8 @@ def quizUI(user_id, category, number):
           wraplength=500,
           text= parser.unescape(questions[i]["question"]),
           justify = LEFT,
-          padx = 10).pack(side="top", pady=20, anchor=W))
+          padx = 10))
+        temp[0].pack(side="top", pady=20, anchor=W)
 
         answers[i] = IntVar();
 
@@ -61,16 +61,16 @@ def quizUI(user_id, category, number):
                         text=parser.unescape(options[j]),
                         padx = 10, 
                         variable=answers[i], 
-                        value=j).pack(side="top", anchor=W))
+                        value=j))
+            temp[j+1].pack(side="top", anchor=W)
         quest.append(temp);
-    
-    print(len(quest[1]) - 1);
-    # quest[0][1].config(color = "red")    
+
+    quest[0][1].config(foreground = "red");
     submitBtn = Button(frame, text ="Submit", command = lambda: calculateResults(questions)).pack(side="right")
         
     # Center Window
     methods.centerWindow(root);
-    mainloop()
+    root.mainloop();
     
 
 def retrieve(user_id, category, quantity):
