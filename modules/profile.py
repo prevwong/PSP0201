@@ -28,7 +28,7 @@ parentDir = ""; # Initialization in SetPath
 #########################################
 PROFILE_HEIGHT = 90;
 PROFILE_WIDTH = 90;
-PROFILE_PIC_LINK = methods.readData("\pic\profile.gif");  # Initialization in SetPath
+PROFILE_PIC_LINK = methods.readData("pic/profile.gif");  # Initialization in SetPath
 '''
 DATAFILEPATH = "";      # Initialization in SetPath
 MAINFOLDER = "PSP0201";
@@ -266,7 +266,7 @@ def RandomQues():
 def Play():
         print("Play");
         root.destroy()
-        quiz.selection()
+        quiz.Selection()
 def Ranking():
         print("Ranking");
         ranking.show_ranking()
@@ -275,7 +275,6 @@ def Ranking():
 #####################################
 # Code below here is for testing purpose, it will be deleted in main.py after combined
 #####################################
-
 
 
 

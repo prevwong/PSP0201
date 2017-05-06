@@ -18,11 +18,10 @@ def centerWindow(root):
 
 def locateFile(filename):
         MAINFOLDER = "PSP0201"
-        DATA_DIR = "\\data\\" + filename
+        DATA_DIR = "data/" + filename
         current_dir = os.path.dirname(__file__)
-        temp_path = current_dir
-        while (temp_path.split("\\")[-1] != MAINFOLDER):
-                temp_path = os.path.abspath(os.path.join(temp_path, os.pardir))
+        temp_path = os.path.dirname(current_dir) + '/'
+        
         return temp_path + DATA_DIR
 
 

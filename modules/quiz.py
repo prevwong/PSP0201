@@ -11,13 +11,14 @@ import methods
 
 parser = HTMLParser.HTMLParser()
 canvas = "";
-quest = [];
-root=""
+
+scoreboardWindow=""
+rdioButtonsTmp = ""
 questions = "";
 answers={}
 submitBtn = "";
-window ="";
-master = ""
+quizWindow = ""
+
 session_id = "0"
 
 def on_configure(event):
@@ -30,23 +31,24 @@ def on_mousescroll(event):
     canvas.yview_scroll( -1 * (event.delta), "units")
 
 def quizUI(user_id, category, number):
-    global canvas,answers,submitBtn,questions,window;
+    global canvas,answers,submitBtn,questions,quizWindow,rdioButtonsTmp;
 
-    window = Tk()
-    window.resizable(width=False, height=False)
+    quizWindow = Tk()
+    quizWindow.title("AskTrivia")
+    quizWindow.resizable(width=False, height=False)
     
     # Retrieve the list of questions 
     questions = retrieve(user_id, category, number)
     
     # Creating a canvas to allow scrolling
     if len(questions) == 1:
-        canvas = Canvas(window, width = 520, height = 300)
+        canvas = Canvas(quizWindow, width = 520, height = 300)
     else:
-        canvas = Canvas(window, width=520, height=600)
+        canvas = Canvas(quizWindow, width=520, height=600)
     canvas.pack(side=LEFT, padx=30)
 
     # Scrollbar
-    scrollbar = Scrollbar(window, command=canvas.yview)
+    scrollbar = Scrollbar(quizWindow, command=canvas.yview)
     scrollbar.pack(side=LEFT, fill='y')
     canvas.configure(yscrollcommand = scrollbar.set)
     canvas.bind('<Configure>', on_configure)
@@ -56,35 +58,34 @@ def quizUI(user_id, category, number):
     frame.grid()
     canvas.create_window((0,0), window=frame, anchor='nw')
 
-
+    rdioButtonsTmp = {};
 
     for i in range(0, len(questions)):
         options = questions[i]["options"]
 
-        temp = [];
-        temp.append(Label(frame, 
+        
+        Label(frame, 
           wraplength=500,
           text= parser.unescape(questions[i]["question"]),
           justify = LEFT,
-          padx = 10))
-        temp[0].pack(side="top", pady=20, anchor=W)
+          padx = 10).pack(side="top", pady=20, anchor=W)
 
         answers[i] = IntVar();
+        rdioButtonsTmp[i] = []
 
         for j in range(0, len(options)):
-            temp.append(Radiobutton(frame, 
+            rdioButtonsTmp[i].insert(j, Radiobutton(frame, 
                         text=parser.unescape(options[j]),
                         padx = 10, 
                         variable=answers[i], 
                         value=j))
-            temp[j+1].pack(side="top", anchor=W)
-        quest.append(temp);
+            rdioButtonsTmp[i][j].pack(side="top", anchor=W)
     
     submitBtn = Button(frame, text ="Submit", command = completedQuiz);
     submitBtn.pack(side="right")
         
     # Center Window
-    methods.centerWindow(window);
+    methods.centerWindow(quizWindow);
     mainloop()
 
 
@@ -119,17 +120,20 @@ def retrieve(user_id, category, quantity):
         return questions;
 
 def close():
-    global window, master,quest;
-    window.destroy();
-    quest = []
+    global quizWindow, scoreboardWindow;
+    try:
+        quizWindow.destroy();
+    except TclError:
+        print "window closed"
+    try:
+        scoreboardWindow.destroy();
+    except TclError:
+        print "window closed"
+
     profile.ShowWindow()
 
 
-    
-
-
 def completedQuiz():
-    global root,quest,answers,submitBtn;
     submitBtn.config(text="Again!",command = close);
     calculateResults();
 
@@ -141,7 +145,7 @@ def CalculateLevel(correct, level = 1):
         return CalculateLevel(correct, level+1)
 
 def calculateResults():
-    global root,quest,answers,submitBtn,questions;
+    global scoreboardWindow,rdioButtonsTmp,answers,submitBtn,questions;
 
     correct = 0
     incorrect = []
@@ -153,10 +157,11 @@ def calculateResults():
         else: 
             incorrect.append(i)
         
-        quest[i][correct_answer+1].configure(foreground = "green")
-        for x in range(0, len(questions[i]["options"])):
-            if(x != correct_answer):
-                quest[i][x+1].config(foreground = "red")
+        rdioButtonsTmp[i][correct_answer].config(bg = "#8cff9f")
+        for j in range(0, len(questions[i]["options"])):
+            if ( j != correct_answer ) :
+                rdioButtonsTmp[i][j].config(bg="#ff8e8e")
+    
             
 
     # Calculate percentage based on the no. of corrects over the no. of questions
@@ -164,9 +169,9 @@ def calculateResults():
 
 
     #The new window and the expcalculator starts here
-    root = Tk()
-    root.title("Scoreboard")
-    root.geometry("700x400")
+    scoreboardWindow = Tk()
+    scoreboardWindow.title("Scoreboard")
+    scoreboardWindow.geometry("700x400")
 
     def expadder(correct):
         users = methods.readData("users.json")
@@ -178,19 +183,19 @@ def calculateResults():
         return exp 
         
 
-    label = Label(root, text= "Score for this round:" + "\n" +str(percentage) + "%" )
+    label = Label(scoreboardWindow, text= "Score for this round:" + "\n" +str(percentage) + "%" )
     label.pack(side='top',pady=50)
     label.config(font=("Courier", 40))
 
-    expgain = Label(root, text = "Experience for this round:" + "\n" + str(expadder(correct)))
+    expgain = Label(scoreboardWindow, text = "Experience for this round:" + "\n" + str(expadder(correct)))
     expgain.pack()
     expgain.config(font=("Courier",30))
 
-    root.mainloop();
+    scoreboardWindow.mainloop();
     
 
     
-def selection():
+def Selection():
     global master;
     categorynum = {"Random":9,"Books":10,"Film":11,"Music":12,"Musicals & Theatres":13,"Television":14,"Video Games":15,"Board Games":16,
                "Science & Nature":17,"Computers":18,"Mathematics":19,"Mythology":20,"Sports":21,"Geography":22,"History":23,"Politics":24,"Art":25,
