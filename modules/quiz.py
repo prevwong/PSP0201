@@ -13,11 +13,9 @@ parser = HTMLParser.HTMLParser()
 canvas = "";
 
 scoreboardWindow=""
-rdioButtonsTmp = ""
-questions = "";
-answers={}
-submitBtn = "";
 quizWindow = ""
+rdioButtonsTmp = ""
+submitBtn = "";
 
 session_id = "0"
 
@@ -31,7 +29,7 @@ def on_mousescroll(event):
     canvas.yview_scroll( -1 * (event.delta), "units")
 
 def quizUI(user_id, category, number):
-    global canvas,answers,submitBtn,questions,quizWindow,rdioButtonsTmp;
+    global canvas,submitBtn,quizWindow,rdioButtonsTmp;
 
     quizWindow = Tk()
     quizWindow.title("AskTrivia")
@@ -39,7 +37,8 @@ def quizUI(user_id, category, number):
     
     # Retrieve the list of questions 
     questions = retrieve(user_id, category, number)
-    
+    answers={}
+
     # Creating a canvas to allow scrolling
     if len(questions) == 1:
         canvas = Canvas(quizWindow, width = 520, height = 300)
@@ -81,7 +80,7 @@ def quizUI(user_id, category, number):
                         value=j))
             rdioButtonsTmp[i][j].pack(side="top", anchor=W)
     
-    submitBtn = Button(frame, text ="Submit", command = completedQuiz);
+    submitBtn = Button(frame, text ="Submit", command = lambda: completedQuiz(questions, answers));
     submitBtn.pack(side="right")
         
     # Center Window
@@ -133,9 +132,9 @@ def close():
     profile.ShowWindow()
 
 
-def completedQuiz():
+def completedQuiz(questions, answers):
     submitBtn.config(text="Again!",command = close);
-    calculateResults();
+    calculateResults(questions, answers);
 
 def CalculateLevel(correct, level = 1):
     correct -= (5 + 2*level)
@@ -144,8 +143,8 @@ def CalculateLevel(correct, level = 1):
     else:
         return CalculateLevel(correct, level+1)
 
-def calculateResults():
-    global scoreboardWindow,rdioButtonsTmp,answers,submitBtn,questions;
+def calculateResults(questions, answers):
+    global scoreboardWindow,rdioButtonsTmp,submitBtn;
 
     correct = 0
     incorrect = []
