@@ -152,7 +152,7 @@ def calculateResults():
             
 
     # Calculate percentage based on the no. of corrects over the no. of questions
-    percentage = float(correct) / float(len(questions)) * 100
+    percentage = (float(correct) / float(len(questions))) * 100
 
 
     #The new window and the expcalculator starts here
@@ -212,44 +212,3 @@ def Selection():
     master.mainloop()
 
 Selection()
-'''
-    window = Tk()
-    window.resizable(width=False, height=False)
-    window.title("Scoreboard")
-
-    # Creating a canvas to allow scrolling
-    canvas = Canvas(window, width=500, height=400)
-    canvas.pack(side=LEFT, padx=30)
-
-    frame = Frame(canvas, width=500, pady=40);
-    frame.pack(expand=1)
-    canvas.create_window((0,0), window=frame, anchor='nw')
-
-
-    label = Label(frame, text= percentage, anchor="center")
-    label.pack(fill="x", anchor="center")
-
-    label.config(font=("Courier", 50))
-     
-    expgain = Label(frame, text = expadder(percentage))
-    expgain.pack()
-    expgain.config(font=("Courier",30))
-    
-
-    methods.centerWindow(window);
-    window.mainloop()
-    
-def expadder(percentage):
-	exp = 0 # replace this by getting the actual value from the user's json
-	if percentage == 100:
-	    exp += 100
-	    return 100
-	else:
-	    if percentage <= 75:
-	        exp += 50
-	        return 50
-	    else:
-	        exp += 20
-	        return 20    
-'''
-
