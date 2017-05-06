@@ -4,6 +4,7 @@ import os
 import ttk
 from datetime import datetime
 from threading import Timer
+from multiprocessing import Process
 import time
 import methods
 
@@ -25,17 +26,19 @@ def sort_exp(typeof, users):
 
 # The reset weekly exp function, resets the weekly exp to 0
 def reset_weeklyexp():    
-    users = methods.readData()
+    users = methods.readData("users.json")
     for i in range(0, len(users)):
         users[str(i)]["weeklyexp"] = 0  
-    methods.writeData(users)
+    methods.writeData(users, "users.json")
     
 # This reset at functions, take the argument of what time to reset, and add 7 days consequently for future resets
-def reset_at(year = 2017, month = 04, day = 30, hour = 21, minutes = 41, seconds = 0):
-    reset_time = datetime(year, month, day, hour, minutes, seconds)
-    while datetime.now() < reset_time:
-        time.sleep(1)
-    reset_weeklyexp()
+def reset_after(days = 7):
+    reset_time = datetime(2017, 04, 30, 00, 00, 00)
+    if datetime.now() >= reset_time:
+        excess_days = int(str(datetime.now() - reset_time).split(" ")[0])
+        if excess_days % 7 == 0:
+            reset_weeklyexp()
+
 
 ##################
 # Define the UI and show the UI
@@ -44,7 +47,7 @@ def reset_at(year = 2017, month = 04, day = 30, hour = 21, minutes = 41, seconds
 def show_ranking():
     
     #Initialize users JSON
-    users = methods.readData()
+    users = methods.readData("users.json")
     
     ###UI positioning###
     
@@ -99,7 +102,6 @@ def show_ranking():
             
 
     root.mainloop()
+    
+reset_after()
 
-
-
-show_ranking()

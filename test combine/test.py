@@ -6,7 +6,7 @@ import os.path
 
 def locateUserJSON():
         MAINFOLDER = "PSP0201"
-        DATA_DIR = "/data/test.json"
+        DATA_DIR = "/data/users.json"
         current_dir = os.path.dirname(__file__)
         temp_path = current_dir
         while (temp_path.split("\\")[-1] != MAINFOLDER):
