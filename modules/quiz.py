@@ -123,7 +123,7 @@ def close():
     x.ShowWindow();
 
     root.mainloop();
-    print(123)
+    
 
 
 def completedQuiz():
@@ -162,7 +162,7 @@ def calculateResults():
 
     def expadder(correct):
         exp = 0;
-        correct = correct * random.randint(200, 300)
+        correct = correct * 25
         exp = exp + correct 
         return exp 
         
