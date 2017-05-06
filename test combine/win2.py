@@ -12,3 +12,4 @@ class win2(Frame):
 
 	def Ranking(self):
 		print(23);
+
