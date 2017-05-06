@@ -16,9 +16,9 @@ def centerWindow(root):
 	root.geometry("+%d+%d" % (x, y))
 	root.deiconify()
 
-def locateUserJSON():
+def locateFile(filename):
         MAINFOLDER = "PSP0201"
-        DATA_DIR = "/data/test.json"
+        DATA_DIR = "\\data\\" + filename
         current_dir = os.path.dirname(__file__)
         temp_path = current_dir
         while (temp_path.split("\\")[-1] != MAINFOLDER):
@@ -26,14 +26,18 @@ def locateUserJSON():
         return temp_path + DATA_DIR
 
 
-def readData():
-        json_file = locateUserJSON()
-        with open(json_file, "r") as infile:
-                users = json.load(infile)
-        return users
 
-def writeData(data):
-        json_file = locateUserJSON()
+def readData(filename):
+        json_file = locateFile(filename)
+        if json_file.endswith(".json"):
+                with open(json_file, "r") as infile:
+                        users = json.load(infile)
+                return users
+        else:
+                return json_file
+
+def writeData(data, filename):
+        json_file = locateFile(filename)
         with open(json_file, "w") as outfile:
                 json.dump(data, outfile)
 

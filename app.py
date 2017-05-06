@@ -1,5 +1,4 @@
-from modules import user
-from modules import quiz
-from modules import play
+from modules import profile
 
-
+profile.session_id = "0"
+profile.ShowWindow()
