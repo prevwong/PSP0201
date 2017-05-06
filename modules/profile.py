@@ -266,7 +266,7 @@ def RandomQues():
 def Play():
         print("Play");
         root.destroy()
-        quiz.Selection()
+        quiz.selection()
 def Ranking():
         print("Ranking");
         ranking.show_ranking()
