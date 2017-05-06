@@ -14,7 +14,6 @@ root.title("AskTriva");
 root.geometry("640x480");
 root.minsize(height = 0,width = 100);
 
-
 data = 0;
 frame_count = 0;    # As a counter for gif frame later
 framenumber = 0;
@@ -66,8 +65,8 @@ def SetPath():
 
 	# Initiazation
 	parentDir = temp;
-	PROFILE_PIC_LINK = parentDir + "/pic/profile.gif";
-	DATAFILEPATH = parentDir + "/data/users.json";
+	PROFILE_PIC_LINK = parentDir + "\pic\profile.gif";
+	DATAFILEPATH = parentDir + "\data\users.json";
 
 
 def ShowWindow():
@@ -157,7 +156,6 @@ def ChoosePicture():
 	"""Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""
 	global framenumber;
 	global frame_count;
-	global parentDir;
 	global Profile_Pic;
 	global PROFILE_PIC_LINK;
 	global animaterun;
@@ -171,24 +169,23 @@ def ChoosePicture():
 		frame_count = 0;
 		dest = parentDir + "\pic";
 		# Rmove the old profile picture file
-		os.remove(parentDir + "\pic\profile.gif");
+		os.remove(PROFILE_PIC_LINK);
 		# Copy the new one to the directory
 		copy(filename,dest);
 		# Rename the file to profile.gif
 		destpicname = dest + "\\" + filename.split('/')[-1];
-		os.rename(destpicname,parentDir + "\pic\profile.gif");
+		os.rename(destpicname,PROFILE_PIC_LINK);
 		# Update the framenumber of new profile gif
 		framenumber = GetFrame(PROFILE_PIC_LINK);
 	
 	animaterun = True;
 	Animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
 
-def ReadData():
+def ReadData(filepath):
 	"""To Read the data from json file"""
-	global DATAFILEPATH;
 	global data;
 	# Open file and read
-	with open(DATAFILEPATH,'r') as f:
+	with open(filepath,'r') as f:
 		data = json.load(f);
 
 def IsAnimate(filename,index):
@@ -272,7 +269,7 @@ def Ranking():
 #####################################
 
 SetPath();
-ReadData();
+ReadData(DATAFILEPATH);
 ShowWindow();
 
 
