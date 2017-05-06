@@ -5,9 +5,13 @@ import ttk
 from datetime import datetime
 from threading import Timer
 import time
+import methods
 
+######################
+# Functions required during UI rendering
+######################
 
-#Sort by EXP
+# The Sort by exp function, takes the argument (type of exp displayed, users json file)
 def sort_exp(typeof, users):
     sorted_array = sorted(users, key=lambda x: int((users[str(x)][typeof])), reverse=True)
     i = 1
@@ -19,45 +23,32 @@ def sort_exp(typeof, users):
         i = i + 1
     return info_array
 
-#Open users.json
-def open_user_json():
-    cur_path = os.path.dirname(__file__)
-    new_path = os.path.join(cur_path, "../data/test.json")
-
-    #Initialize users json file
-    with open(new_path) as infile:
-        raw_file = json.load(infile)
-        users = json.loads(raw_file)
-    return users
-
-#Save users.json
-def save_user_json(users):
-    cur_path = os.path.dirname(__file__)
-    new_path = os.path.join(cur_path, "../data/test.json")
-    users = json.dumps(users, sort_keys = True)
-    with open(new_path, "w") as outfile:
-        json.dump(users, outfile)
-    return 0
-
+# The reset weekly exp function, resets the weekly exp to 0
 def reset_weeklyexp():    
-    users = open_user_json()
+    users = methods.readData()
     for i in range(0, len(users)):
-        users[str(i)]["weeklyexp"] = 0
-    #This line is for testing purpose
-    #users["1"]["weeklyexp"] = 12   
-    save_user_json(users)
+        users[str(i)]["weeklyexp"] = 0  
+    methods.writeData(users)
     
+# This reset at functions, take the argument of what time to reset, and add 7 days consequently for future resets
+def reset_at(year = 2017, month = 04, day = 30, hour = 21, minutes = 41, seconds = 0):
+    reset_time = datetime(year, month, day, hour, minutes, seconds)
+    while datetime.now() < reset_time:
+        time.sleep(1)
+    reset_weeklyexp()
+
+##################
+# Define the UI and show the UI
+##################
 #UI
 def show_ranking():
     
-    #Initialize variables
-    users = open_user_json() 
+    #Initialize users JSON
+    users = methods.readData()
     
-    ###UI rendering###
+    ###UI positioning###
     
-    root = Tk()
-    root.title("AskTrivia Leaderboard")
-    root.geometry("320x240")
+    root = methods.defineWindow("AskTrivia Leaderboard", "320x400")
     root.rowconfigure(0, weight = 1)
     root.rowconfigure(1, weight = 1)
     root.rowconfigure(2, weight = 1)
@@ -73,7 +64,7 @@ def show_ranking():
                     fg = "Black")
     leaderboard_text.grid(row=0, padx = 100)
     
-    #Overall ranking
+    ##Overall ranking##
     rank_text = Label(exp_frame, text = "Rank")
     name_text = Label(exp_frame, text = "Name")
     exp_text = Label(exp_frame, text = "EXP")
@@ -109,12 +100,6 @@ def show_ranking():
 
     root.mainloop()
 
-#The reset_at function
-def reset_at(year = 2017, month = 04, day = 30, hour = 21, minutes = 41, seconds = 0):
-    reset_time = datetime(year, month, day, hour, minutes, seconds)
-    while datetime.now() < reset_time:
-        time.sleep(1)
-    reset_weeklyexp()
+
 
 show_ranking()
-
