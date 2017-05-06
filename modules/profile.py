@@ -110,6 +110,7 @@ def ShowWindow():
 	#########################################
 	# Profile Picture Initializating Start here
 	#########################################
+<<<<<<< HEAD
 	# Read profile picture
 	fileformat = "gif -index 0"; # A format to read the frame of gif
 	loaded_img = PhotoImage(file = PROFILE_PIC_LINK,format=fileformat);
@@ -117,6 +118,23 @@ def ShowWindow():
 	img = loaded_img.subsample(loaded_img.width() / PROFILE_WIDTH,loaded_img.height() / PROFILE_HEIGHT);
 	# Create profile picture
 	Profile_Pic = Button(root,bd = 0,command = ChoosePicture ,image = img,bg = "white",height = img.height(),width = img.width());
+=======
+	PROFILE_HEIGHT = 90;
+	PROFILE_WIDTH = 90;
+	PROFILE_PIC_LINK = "";	# Initialization in SetPath
+	DATAFILEPATH = "";	# Initialization in SetPath
+	MAINFOLDER = "PSP0201";
+
+	TitleLabel = "";
+	Profile_Pic = "";
+	NameLabel = "";
+	DesTitleLabel = "";
+	DesLabel = "";
+	SaveDesButton = "";
+	PlayButton = "";
+	RandomQuesButton = "";
+	RankingButton = "";
+>>>>>>> df7db464946637cd725b20a7fa93d499b111428e
 
 	#########################################
 	# Position Part

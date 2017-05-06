@@ -2,9 +2,9 @@ from Tkinter import *
 from win2 import win2
 
 class win1(Frame):
-	w = "";
-	def __init__(self,win,win2 = None):
-		Frame.__init__(self);
+	
+	def __init__(self,win):
+		#Frame.__init__(self);
 		self.w = win;
 		
 	def ShowWindow(self):
