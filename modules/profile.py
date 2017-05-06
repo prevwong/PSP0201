@@ -7,13 +7,13 @@ import os.path
 import threading
 import methods
 import ranking
+import quiz
 #########################################
 # Variable Start here
 #########################################
-root = methods.defineWindow("AskTrivia", "640x480")
-root.minsize(height = 0,width = 100);
+
 session_id = "0"
-data = methods.readData("users.json");
+quiz.session_id = session_id
 frame_count = 0;    # As a counter for gif frame later
 framenumber = 0;
 animaterun = True;
@@ -76,7 +76,9 @@ def ReadData(filepath):
                 data = json.load(f);
 '''
 def ShowWindow():
-
+        '''To initialize window'''
+        root = methods.defineWindow("AskTrivia", "640x480")
+        root.minsize(height = 0,width = 100);
         """To Initializating the element """
         #########################################
         # Text Initializating Start here
@@ -99,6 +101,7 @@ def ShowWindow():
         global framenumber;
         #SetPath();
         #ReadData(DATAFILEPATH);
+        data = methods.readData("users.json");
         name = data[session_id]['name'];
         level = data[session_id]['level'];
         description = data[session_id]['description'];
@@ -175,7 +178,7 @@ def ChoosePicture():
         if(filename != ""):
                 # Reset the frame count
                 frame_count = 0;
-                dest = parentDir + "\pic";
+                dest = os.path.dirname(PROFILE_PIC_LINK);
                 # Rmove the old profile picture file
                 os.remove(PROFILE_PIC_LINK);
                 # Copy the new one to the directory
@@ -258,10 +261,12 @@ def SaveDes():
 
 def RandomQues():
         print("Random Question");
-
+        root.destroy()
+        quiz.quizUI("1",9,1) 
 def Play():
         print("Play");
-
+        root.destroy()
+        quiz.Selection()
 def Ranking():
         print("Ranking");
         ranking.show_ranking()
@@ -271,7 +276,7 @@ def Ranking():
 # Code below here is for testing purpose, it will be deleted in main.py after combined
 #####################################
 
-ShowWindow()
+
 
 
 

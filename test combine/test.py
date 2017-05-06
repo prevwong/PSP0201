@@ -37,9 +37,9 @@ for i in range(0,10):
     users[i] = {}
     users[i]["name"] = `i` + "hohoho"
     users[i]["password"] = "elemek"
-    users[i]["exp"] = 100 + i*123
-    users[i]["weeklyexp"] = 50 + i
-    users[i]["level"] = 3
+    users[i]["exp"] = 100
+    users[i]["weeklyexp"] = 50 
+    users[i]["level"] = 1
     users[i]["description"] = "Type something here"
 
 writeData(users)

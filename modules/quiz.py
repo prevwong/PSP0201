@@ -7,7 +7,7 @@ from Tkinter import *
 import ttk
 import guiquizselection 
 import profile
-
+import methods
 
 parser = HTMLParser.HTMLParser()
 canvas = "";
@@ -17,6 +17,8 @@ questions = "";
 answers={}
 submitBtn = "";
 window ="";
+master = ""
+session_id = "0"
 
 def on_configure(event):
     # update scrollregion after starting 'mainloop'
@@ -24,17 +26,23 @@ def on_configure(event):
     canvas.configure(scrollregion=canvas.bbox('all'))
 
 def on_mousescroll(event):
-	# enable scrolling; defined speed
-	canvas.yview_scroll( -1 * (event.delta), "units")
+    # enable scrolling; defined speed
+    canvas.yview_scroll( -1 * (event.delta), "units")
 
 def quizUI(user_id, category, number):
     global canvas,answers,submitBtn,questions,window;
 
     window = Tk()
     window.resizable(width=False, height=False)
-
+    
+    # Retrieve the list of questions 
+    questions = retrieve(user_id, category, number)
+    
     # Creating a canvas to allow scrolling
-    canvas = Canvas(window, width=520, height=600)
+    if len(questions) == 1:
+        canvas = Canvas(window, width = 520, height = 300)
+    else:
+        canvas = Canvas(window, width=520, height=600)
     canvas.pack(side=LEFT, padx=30)
 
     # Scrollbar
@@ -48,8 +56,7 @@ def quizUI(user_id, category, number):
     frame.grid()
     canvas.create_window((0,0), window=frame, anchor='nw')
 
-    # Retrieve the list of questions 
-    questions = retrieve(user_id, category, number)
+
 
     for i in range(0, len(questions)):
         options = questions[i]["options"]
@@ -82,7 +89,7 @@ def quizUI(user_id, category, number):
 
 
 def retrieve(user_id, category, quantity):
-    url = "https://opentdb.com/api.php?amount="+ str(quantity) +"&category=11"
+    url = "https://opentdb.com/api.php?amount="+ str(quantity) +"&category=" + str(category)
     # Read JSON data from url
     response = urllib.urlopen(url)
     jsonData = json.loads(response.read())
@@ -112,17 +119,12 @@ def retrieve(user_id, category, quantity):
         return questions;
 
 def close():
-    global window;
+    global window, master,quest;
     window.destroy();
+    quest = []
+    profile.ShowWindow()
 
-    root = Tk();
-    root.title("AskTriva");
-    root.geometry("640x480");
-    root.minsize(height = 0,width = 100);
-    x = profile.Profile();
-    x.ShowWindow();
 
-    root.mainloop();
     
 
 
@@ -130,7 +132,13 @@ def completedQuiz():
     global root,quest,answers,submitBtn;
     submitBtn.config(text="Again!",command = close);
     calculateResults();
-    
+
+def CalculateLevel(correct, level = 1):
+    correct -= (5 + 2*level)
+    if correct <= 0:
+        return level
+    else:
+        return CalculateLevel(correct, level+1)
 
 def calculateResults():
     global root,quest,answers,submitBtn,questions;
@@ -161,9 +169,12 @@ def calculateResults():
     root.geometry("700x400")
 
     def expadder(correct):
-        exp = 0;
-        correct = correct * 25
-        exp = exp + correct 
+        users = methods.readData("users.json")
+        exp = correct * 25
+        users[session_id]["exp"] += exp
+        users[session_id]["weeklyexp"] += exp     
+        users[session_id]["level"] = CalculateLevel(users[session_id]["exp"] / 25)    
+        methods.writeData(users, "users.json")
         return exp 
         
 
@@ -176,8 +187,11 @@ def calculateResults():
     expgain.config(font=("Courier",30))
 
     root.mainloop();
+    
 
+    
 def Selection():
+    global master;
     categorynum = {"Random":9,"Books":10,"Film":11,"Music":12,"Musicals & Theatres":13,"Television":14,"Video Games":15,"Board Games":16,
                "Science & Nature":17,"Computers":18,"Mathematics":19,"Mythology":20,"Sports":21,"Geography":22,"History":23,"Politics":24,"Art":25,
                "Celebrities":26,"Animals":27,"Vehicles":28,"Comics":29,"Gadgets":30,"Japanese Anime & Manga":31,"Cartoon & Animations":32}
@@ -185,7 +199,7 @@ def Selection():
     master = Tk()
     master.title("Pick your choice.")
     master.geometry("400x300")
-
+    
 
     category_var = StringVar(master)
     category_var.set("Random") #default value
@@ -211,4 +225,3 @@ def Selection():
     Button(master, text = "Play!", command = getinput).pack(side=BOTTOM,pady= 50)
     master.mainloop()
 
-Selection()
