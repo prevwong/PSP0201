@@ -17,6 +17,7 @@ quiz.session_id = session_id
 frame_count = 0;    # As a counter for gif frame later
 framenumber = 0;
 animaterun = True;
+data = ""
 '''
 # Get the current directory and dest directory
 currfilePath = "";      # Initialization in SetPath
@@ -77,8 +78,7 @@ def ReadData(filepath):
 '''
 def ShowWindow():
         '''To initialize window'''
-        root = methods.defineWindow("AskTrivia", "640x480")
-        root.minsize(height = 0,width = 100);
+
         """To Initializating the element """
         #########################################
         # Text Initializating Start here
@@ -99,6 +99,8 @@ def ShowWindow():
         global DATAFILEPATH;
         global root;
         global framenumber;
+        root = methods.defineWindow("AskTrivia", "640x480")
+        root.minsize(height = 0,width = 100);
         #SetPath();
         #ReadData(DATAFILEPATH);
         data = methods.readData("users.json");
@@ -250,6 +252,7 @@ def Animate(object,filename,speed = 0.1):
 
 def SaveDes():
         """Get the description from box and write it into the file"""
+        global data
         # Get the input
         temp = DesLabel.get(1.0,END);
         # Remove the \n and edit the data
