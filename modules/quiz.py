@@ -91,32 +91,45 @@ def quizUI(user_id, category, number):
 def retrieve(user_id, category, quantity):
     url = "https://opentdb.com/api.php?amount="+ str(quantity) +"&category=" + str(category)
     # Read JSON data from url
-    response = urllib.urlopen(url)
-    jsonData = json.loads(response.read())
-    results = jsonData["results"]
-    responseCode = jsonData["response_code"]
+    error = 0;
+    try:
+        response = urllib.urlopen(url)
+        try:
+            jsonData = json.loads(response.read())
+        except ValueError:
+            error = 1;
+    except IOError:
+        error = 1;
 
+    if ( error == 1 ) :
+        with open("data/backup.json", "r") as backup:
+            jsonData = json.load(backup)
+            results = jsonData[category][quantity]
+    else: 
+        results = jsonData["results"]
+    
     questions = []
-    if ( responseCode == 0 ) :
-        for data in results:
-            # Place them all in their respective variables
-            difficulty, category, question, correct_answer, incorrect_answers = data["difficulty"], data["category"], data["question"], data["correct_answer"], data["incorrect_answers"]
-            
-            # Append the incorrect_answers list to our options list
-            options = []
-            options.extend(incorrect_answers)
-
-            # Calculate a random index to place our correct_answer in the options list
-            random_index = random.randrange(len(options)+1);
-            options.insert(random_index, correct_answer)
-
-            # Append it in the form of an object/dictionary to our questions list
-            questions.append({ "question" : question, "options" : options, "correct_answer" : random_index })
-
-        # Shuffle our questions
-        random.shuffle(questions, random.random)
+    for i in range(0, len(results)):
+        data = results[i]
+        # Place them all in their respective variables
+        difficulty, category, question, correct_answer, incorrect_answers = data["difficulty"], data["category"], data["question"], data["correct_answer"], data["incorrect_answers"]
         
-        return questions;
+        # Append the incorrect_answers list to our options list
+        options = []
+        options.extend(incorrect_answers)
+
+        # Calculate a random index to place our correct_answer in the options list
+        random_index = random.randrange(len(options)+1);
+        options.insert(random_index, correct_answer)
+
+        # Append it in the form of an object/dictionary to our questions list
+        questions.append({ "question" : question, "options" : options, "correct_answer" : random_index })
+
+    # Shuffle our questions
+    random.shuffle(questions, random.random)
+    
+    return questions
+    
 
 def close():
     global quizWindow, scoreboardWindow;
