@@ -78,8 +78,10 @@ def show_ranking():
     exp_text.grid(row=2,column = 4, columnspan = 2)
     
     rank_by_exp = sort_exp("exp",users)
-    if len(rank_by_exp) <= 10:
+    if len(rank_by_exp) >= 1:
         for i in range(1, len(rank_by_exp)+1):
+            if i == 11:
+                break
             rank = Label(exp_frame, text = str(i)).grid(row = i + 2, column = 0, columnspan = 2)
             name = Label(exp_frame, text = rank_by_exp[i]["name"]).grid(row = i + 2, column = 2, columnspan = 2, sticky = W)
             exp = Label(exp_frame, text = rank_by_exp[i]["exp"]).grid(row = i + 2, column = 4, columnspan = 2, sticky = E)
@@ -94,8 +96,10 @@ def show_ranking():
     exp_text.grid(row=2,column = 4, columnspan = 2)
 
     rank_by_exp = sort_exp("weeklyexp",users)
-    if len(rank_by_exp) <= 10:
+    if len(rank_by_exp) >= 1:
         for i in range(1, len(rank_by_exp)+1):
+            if i == 11:
+                break
             rank = Label(weeklyexp_frame, text = str(i)).grid(row = i + 2, column = 0, columnspan = 2)
             name = Label(weeklyexp_frame, text = rank_by_exp[i]["name"]).grid(row = i + 2, column = 2, columnspan = 2, sticky = W)
             exp = Label(weeklyexp_frame, text = rank_by_exp[i]["weeklyexp"]).grid(row = i + 2, column = 4, columnspan = 2, sticky = E)

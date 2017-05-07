@@ -17,7 +17,6 @@ def centerWindow(root):
 	root.deiconify()
 
 def locateFile(filename):
-        MAINFOLDER = "PSP0201"
         DATA_DIR = "data/" + filename
         current_dir = os.path.dirname(__file__)
         temp_path = os.path.dirname(current_dir) + '/'

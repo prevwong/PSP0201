@@ -1,4 +1,3 @@
-from modules import profile
+from modules import authentication
 
-profile.session_id = "0"
-profile.ShowWindow()
+authentication.ShowWindow()

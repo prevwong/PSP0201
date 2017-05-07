@@ -141,7 +141,7 @@ def close():
         scoreboardWindow.destroy();
     except TclError:
         print "window closed"
-
+    profile.session_id = session_id
     profile.ShowWindow()
 
 

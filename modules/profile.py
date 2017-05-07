@@ -17,23 +17,13 @@ quiz.session_id = session_id
 frame_count = 0;    # As a counter for gif frame later
 framenumber = 0;
 animaterun = True;
-'''
-# Get the current directory and dest directory
-currfilePath = "";      # Initialization in SetPath
-currdir = "";   # Initialization in SetPath
-parentDir = ""; # Initialization in SetPath
-'''
+
 #########################################
 # Constant Variable Start here
 #########################################
 PROFILE_HEIGHT = 90;
 PROFILE_WIDTH = 90;
-PROFILE_PIC_LINK = methods.readData("pic/profile.gif");  # Initialization in SetPath
-'''
-DATAFILEPATH = "";      # Initialization in SetPath
-MAINFOLDER = "PSP0201";
-'''
-TitleLabel = "";
+PROFILE_PIC_LINK = methods.readData("pic/profile.gif");  # Initialization in SetPathTitleLabel = "";
 Profile_Pic = "";
 NameLabel = "";
 DesTitleLabel = "";
@@ -46,39 +36,10 @@ RankingButton = "";
 #########################################
 # Function Start here
 #########################################
-'''
-def SetPath():
-        """Set the path of PROFILE_PIC_LINK and DATAFILEPATH"""
-        # Get Current directory
-        global currfilePath;
-        global currdir;
-        global parentDir;
-        global PROFILE_PIC_LINK;
-        global DATAFILEPATH;
 
-        currfilePath = os.path.abspath(__file__);
-        currdir = os.path.abspath(os.path.join(currfilePath,os.pardir));
-        temp = currdir;
-        # Keep go back to parent until grandfather of the program
-        while (temp.split("\\")[-1] != MAINFOLDER):
-                temp = os.path.abspath(os.path.join(temp,os.pardir)); # this will return parent directory.                      
-
-        # Initiazation
-        parentDir = temp;
-        PROFILE_PIC_LINK = parentDir + "\pic\profile.gif";
-        DATAFILEPATH = parentDir + "\data\users.json";
-        
-def ReadData(filepath):
-        """To Read the data from json file"""
-        global data;
-        # Open file and read
-        with open(filepath,'r') as f:
-                data = json.load(f);
-'''
 def ShowWindow():
         '''To initialize window'''
-        root = methods.defineWindow("AskTrivia", "640x480")
-        root.minsize(height = 0,width = 100);
+
         """To Initializating the element """
         #########################################
         # Text Initializating Start here
@@ -101,6 +62,8 @@ def ShowWindow():
         global framenumber;
         #SetPath();
         #ReadData(DATAFILEPATH);
+        root = methods.defineWindow("AskTrivia", "640x480")
+        root.minsize(height = 0,width = 100);
         data = methods.readData("users.json");
         name = data[session_id]['name'];
         level = data[session_id]['level'];
@@ -250,21 +213,24 @@ def Animate(object,filename,speed = 0.1):
 
 def SaveDes():
         """Get the description from box and write it into the file"""
+        users = methods.readData("users.json")
         # Get the input
         temp = DesLabel.get(1.0,END);
         # Remove the \n and edit the data
         des = temp.replace("\n","");
-        data[session_id]["description"] = des;
+        users[session_id]["description"] = des;
         # Write it into the json file
-        methods.writeData(data, "users.json")
+        methods.writeData(users, "users.json")
 
 
 def RandomQues():
         print("Random Question");
+        quiz.session_id = session_id
         root.destroy()
         quiz.quizUI("1",9,1) 
 def Play():
         print("Play");
+        quiz.session_id = session_id
         root.destroy()
         quiz.Selection()
 def Ranking():
