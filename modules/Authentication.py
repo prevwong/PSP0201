@@ -16,37 +16,37 @@ def decrypt(string):
                 result += chr(ord(string[i]) + 10);
         return result
     
-def Submit(username,password,password_confirmation):
+def submit(username,password,password_confirmation):
         
         if len(username) <6:
                 
                 tkMessageBox.showerror("Error","Minimum length of username is 6")
-
-        elif len(password)<6:
+                return
+        if len(password)<6:
                 tkMessageBox.showerror("Error","Minimum length of password is 6")
-                
-        elif password_confirmation != password:
+                return
+        if password_confirmation != password:
                 tkMessageBox.showerror("Error","Both Passwords did not match. Try Again")
+                return
         
-        else:
-                users = methods.readData("users.json")
-                for i in range (0,len(users)):
-                        if users[str(i)]["name"] == username:
-                                tkMessageBox.showerror("Error","Username:"+username+" has been taken")
-                                break
-                        elif i == len(users)-1:
-                                new_id = len(users)
-                                users[new_id] = {}
-                                users[new_id]["name"]= username
-                                users[new_id]["password"] = encrypt(password)
-                                users[new_id]["description"] = "Set Your Description"
-                                users[new_id]["exp"]=0
-                                users[new_id]["weeklyexp"]=0
-                                users[new_id]["level"] = 1
+        users = methods.readData("users.json")
+        for i in range (0,len(users)):
+                if users[str(i)]["name"] == username:
+                        tkMessageBox.showerror("Error","Username:"+username+" has been taken")
+                        break
+                elif i == len(users)-1:
+                        new_id = len(users)
+                        users[new_id] = {}
+                        users[new_id]["name"]= username
+                        users[new_id]["password"] = encrypt(password)
+                        users[new_id]["description"] = "Set Your Description"
+                        users[new_id]["exp"]=0
+                        users[new_id]["weeklyexp"]=0
+                        users[new_id]["level"] = 1
                                 
-                                methods.writeData(users, "users.json")
+                        methods.writeData(users, "users.json")
                                 
-                                tkMessageBox.showinfo("Done","Register Successfully!")
+                        tkMessageBox.showinfo("Done","Register Successfully!")
                 
                 
 def Back():
@@ -57,26 +57,24 @@ def Register():
     RegWindow.deiconify()
     LogWindow.withdraw()
         
-def Login(username, password):
+def login(username, password):
 
         users = methods.readData("users.json") 
 
         for i in range(0,len(users)):
-                c = users[str(i)]["password"]
-                d = list(c)
-                d.reverse()
+
                 if users[str(i)]["name"] == username and decrypt(users[str(i)]["password"])==password:
                         tkMessageBox.showinfo("Done","Login Successfully!")
                         LogWindow.destroy()
                         RegWindow.destroy()
                         profile.session_id = str(i)
-                        profile.ShowWindow()
+                        profile.show_window()
                         break
                 elif i == len(users) - 1:
                         tkMessageBox.showerror("Error","Please Try Again!")
 
 
-def ShowWindow():
+def show_window():
         global LogWindow, RegWindow
         #First Window
         LogWindow = Tk()
@@ -110,10 +108,10 @@ def ShowWindow():
         #Button
         ButtonColor = "light green"
 
-        submitButton = Button (RegWindow,text = "    Submit    ",command= lambda: Submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()), bg="Pink",activebackground = "white",activeforeground ="black")
+        submitButton = Button (RegWindow,text = "    Submit    ",command= lambda: submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()), bg="Pink",activebackground = "white",activeforeground ="black")
         backButton=Button(RegWindow,text ="    Back    ",command=Back,bg=ButtonColor,activebackground = "white",activeforeground ="black")
         registerButton=Button(LogWindow,text="    Register    ",command= Register,bg=ButtonColor,activebackground = "white",activeforeground="black")
-        loginButton = Button(LogWindow,text = "    Login    ",command= lambda: Login(Log_Username.get(), Log_Password.get()),bg="Pink",activebackground = "white",activeforeground="black")
+        loginButton = Button(LogWindow,text = "    Login    ",command= lambda: login(Log_Username.get(), Log_Password.get()),bg="Pink",activebackground = "white",activeforeground="black")
 
         #Adjust Lining LogWindow
         LogSpaceX1 = Label (LogWindow,text="                                 ",bg=FrameColor).grid(row=0,column=0)

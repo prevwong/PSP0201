@@ -1,3 +1,3 @@
 from modules import authentication
 
-authentication.ShowWindow()
+authentication.show_window()
