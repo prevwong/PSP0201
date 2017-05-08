@@ -6,8 +6,8 @@ import os
 import os.path
 import threading
 import methods
-import ranking
 import quiz
+
 #########################################
 # Variable Start here
 #########################################
@@ -37,7 +37,7 @@ RankingButton = "";
 # Function Start here
 #########################################
 
-def ShowWindow():
+def show_window():
         '''To initialize window'''
 
         """To Initializating the element """
@@ -76,10 +76,10 @@ def ShowWindow():
         # Insert Previous Data
         DesLabel.insert(INSERT,description);
         # Create Button
-        SaveDesButton = Button(root,text = "Save",command = SaveDes);
-        RandomQuesButton = Button(root,text = "Get a Random Question",command = RandomQues);
-        PlayButton = Button(root,text = "Play Now!",command = Play);
-        RankingButton = Button(root,text = "View Ranking",command = Ranking);
+        SaveDesButton = Button(root,text = "Save",command = save_des);
+        RandomQuesButton = Button(root,text = "Get a Random Question",command = random_ques);
+        PlayButton = Button(root,text = "Play Now!",command = play);
+        RankingButton = Button(root,text = "View Ranking",command = ranking);
 
         #########################################
         # Profile Picture Initializating Start here
@@ -91,7 +91,7 @@ def ShowWindow():
         # Resize the profile picture to proper size
         img = loaded_img.subsample(loaded_img.width() / PROFILE_WIDTH,loaded_img.height() / PROFILE_HEIGHT);
         # Create profile picture
-        Profile_Pic = Button(root,bd = 0,command = ChoosePicture ,image = img,bg = "white",height = img.height(),width = img.width());
+        Profile_Pic = Button(root,bd = 0,command = choose_picture ,image = img,bg = "white",height = img.height(),width = img.width());
 
         #########################################
         # Position Part
@@ -122,11 +122,11 @@ def ShowWindow():
         RankingButton.grid(row = 4,column = 2,padx = 15,pady = 20,sticky = 'WE');
 
         # Animate the profile pic to move
-        framenumber = GetFrame(PROFILE_PIC_LINK);
-        Animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
+        framenumber = get_frame(PROFILE_PIC_LINK);
+        animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
 
         root.mainloop();
-def ChoosePicture():
+def choose_picture():
         """Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""
         global framenumber;
         global frame_count;
@@ -150,14 +150,14 @@ def ChoosePicture():
                 destpicname = dest + "\\" + filename.split('/')[-1];
                 os.rename(destpicname,PROFILE_PIC_LINK);
                 # Update the framenumber of new profile gif
-                framenumber = GetFrame(PROFILE_PIC_LINK);
+                framenumber = get_frame(PROFILE_PIC_LINK);
         
         animaterun = True;
-        Animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
+        animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
 
 
 
-def IsAnimate(filename,index):
+def is_animate(filename,index):
         """To check it is the frame in gif exists,
         if then return true,
         if not return false""" 
@@ -172,16 +172,16 @@ def IsAnimate(filename,index):
         except:
                 return False;
 
-def GetFrame(filename):
+def get_frame(filename):
         """Check one frame by one frame to count how many frame in a gif,
         return the number of frame in the end"""
         count = 0;
-        while IsAnimate(filename,count):
+        while is_animate(filename,count):
                 count = count + 1;
         return count;
 
 
-def Animate(object,filename,speed = 0.1):
+def animate(object,filename,speed = 0.1):
         """So function will keep running to animate a gif"""
         # Increase the counter every time loop and change it back to original position after frame finish
         global framenumber;
@@ -207,11 +207,11 @@ def Animate(object,filename,speed = 0.1):
                         object.configure(image = img);
                         object.image = img;
                         # Keep run this function every {speed} second
-                        threading.Timer(speed,Animate,[object,filename]).start();  
+                        threading.Timer(speed,animate,[object,filename]).start();  
                 except:
                         print "";
 
-def SaveDes():
+def save_des():
         """Get the description from box and write it into the file"""
         users = methods.readData("users.json")
         # Get the input
@@ -223,25 +223,25 @@ def SaveDes():
         methods.writeData(users, "users.json")
 
 
-def RandomQues():
+def random_ques():
         print("Random Question");
         quiz.session_id = session_id
         root.destroy()
-        quiz.quizUI("1",9,1) 
-def Play():
+        quiz.quizUI(9,1) 
+def play():
         print("Play");
         quiz.session_id = session_id
         root.destroy()
-        quiz.Selection()
-def Ranking():
+        quiz.selection()
+def ranking():
         print("Ranking");
+        import ranking
         ranking.show_ranking()
 
 
 #####################################
 # Code below here is for testing purpose, it will be deleted in main.py after combined
 #####################################
-
 
 
 

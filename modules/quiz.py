@@ -28,7 +28,7 @@ def on_mousescroll(event):
     # enable scrolling; defined speed
     canvas.yview_scroll( -1 * (event.delta), "units")
 
-def quizUI(user_id, category, number):
+def quizUI(category, number):
     global canvas,submitBtn,quizWindow,rdioButtonsTmp;
 
     quizWindow = Tk()
@@ -36,7 +36,7 @@ def quizUI(user_id, category, number):
     quizWindow.resizable(width=False, height=False)
     
     # Retrieve the list of questions 
-    questions = retrieve(user_id, category, number)
+    questions = retrieve(category, number)
     answers={}
 
     # Creating a canvas to allow scrolling
@@ -80,7 +80,7 @@ def quizUI(user_id, category, number):
                         value=j))
             rdioButtonsTmp[i][j].pack(side="top", anchor=W)
     
-    submitBtn = Button(frame, text ="Submit", command = lambda: completedQuiz(questions, answers));
+    submitBtn = Button(frame, text ="Submit", command = lambda: completed_quiz(questions, answers));
     submitBtn.pack(side="right")
         
     # Center Window
@@ -88,7 +88,7 @@ def quizUI(user_id, category, number):
     mainloop()
 
 
-def retrieve(user_id, category, quantity):
+def retrieve(category, quantity):
     url = "https://opentdb.com/api.php?amount="+ str(quantity) +"&category=" + str(category)
     # Read JSON data from url
     error = 0;
@@ -102,9 +102,8 @@ def retrieve(user_id, category, quantity):
         error = 1;
 
     if ( error == 1 ) :
-        with open("data/backup.json", "r") as backup:
-            jsonData = json.load(backup)
-            results = jsonData[category][quantity]
+        jsonData = methods.readData("backup.json")
+        results = jsonData[category][quantity]
     else: 
         results = jsonData["results"]
     
@@ -142,21 +141,21 @@ def close():
     except TclError:
         print "window closed"
     profile.session_id = session_id
-    profile.ShowWindow()
+    profile.show_window()
 
 
-def completedQuiz(questions, answers):
+def completed_quiz(questions, answers):
     submitBtn.config(text="Again!",command = close);
-    calculateResults(questions, answers);
+    calculate_results(questions, answers);
 
-def CalculateLevel(correct, level = 1):
+def calculate_level(correct, level = 1):
     correct -= (5 + 2*level)
     if correct <= 0:
         return level
     else:
-        return CalculateLevel(correct, level+1)
+        return calculate_level(correct, level+1)
 
-def calculateResults(questions, answers):
+def calculate_results(questions, answers):
     global scoreboardWindow,rdioButtonsTmp,submitBtn;
 
     correct = 0
@@ -190,7 +189,7 @@ def calculateResults(questions, answers):
         exp = correct * 25
         users[session_id]["exp"] += exp
         users[session_id]["weeklyexp"] += exp     
-        users[session_id]["level"] = CalculateLevel(users[session_id]["exp"] / 25)    
+        users[session_id]["level"] = calculate_level(users[session_id]["exp"] / 25)    
         methods.writeData(users, "users.json")
         return exp 
         
@@ -207,7 +206,7 @@ def calculateResults(questions, answers):
     
 
     
-def Selection():
+def selection():
     global master;
     categorynum = {"Random":9,"Books":10,"Film":11,"Music":12,"Musicals & Theatres":13,"Television":14,"Video Games":15,"Board Games":16,
                "Science & Nature":17,"Computers":18,"Mathematics":19,"Mythology":20,"Sports":21,"Geography":22,"History":23,"Politics":24,"Art":25,
@@ -237,7 +236,7 @@ def Selection():
         category = categorynum[category]
         number = number_var.get()
         master.destroy();
-        quizUI("1",category, number)
+        quizUI(category, number)
 
     Button(master, text = "Play!", command = getinput).pack(side=BOTTOM,pady= 50)
     master.mainloop()
