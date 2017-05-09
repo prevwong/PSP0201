@@ -70,7 +70,7 @@ def show_window():
 	TitleLabel = Label(root,text = "Profile",font = ("Arial",22),anchor = W); 
 	NameLabel = Label(root,text = name + " Lvl " + `level` + "",font = ("Arial",14),anchor = W);
 	DesTitleLabel = Label(root,text = "Description",font = ("Arial",10),anchor = W);
-	DesLabel = Text(root,font = ("Arial",11),width = 60, height = 4);
+	DesLabel = Text(root,font = ("Arial",11),width = 75, height = 4);
 	# Insert Previous Data
 	DesLabel.insert(INSERT,description);
 	# Create Button
@@ -78,6 +78,7 @@ def show_window():
 	RandomQuesButton = Button(root,text = "Get a Random Question",command = random_ques);
 	PlayButton = Button(root,text = "Play Now!",command = play);
 	RankingButton = Button(root,text = "View Ranking",command = ranking);
+	LogOutButton = Button(root,text = "Logout",command = logout);
 
 	#########################################
 	# Profile Picture Initializating Start here
@@ -105,19 +106,20 @@ def show_window():
 	root.columnconfigure(2, weight=2);
 	
 	# Row 0
-	TitleLabel.grid(row = 0,column = 0,ipady = 10,ipadx = 10,padx = 10,pady = 10,columnspan = 3);
+	TitleLabel.grid(row = 0,column = 0,ipady = 10,ipadx = 10,padx = 10,pady = 10,columnspan = 4);
 	# Row 1
 	Profile_Pic.grid(row = 1,column = 0,sticky = W,ipady = 10,ipadx = 10,padx = 30,pady = 20);
-	NameLabel.grid(row = 1,column = 1,ipady = 10,ipadx = 10,padx = 20,pady = 10,sticky = 'ESNW',columnspan = 2);
+	NameLabel.grid(row = 1,column = 1,ipady = 10,ipadx = 10,padx = 20,pady = 10,sticky = 'ESNW',columnspan = 3);
 	# Row 2
-	DesTitleLabel.grid(row = 2,column = 0,padx = 12,sticky = W,columnspan = 3);
+	DesTitleLabel.grid(row = 2,column = 0,padx = 12,sticky = W,columnspan = 4);
 	# Row 3
 	DesLabel.grid(row = 3,column = 0,padx = 10,columnspan = 2);
-	SaveDesButton.grid(row = 3,column = 2,sticky = 'W');
+	SaveDesButton.grid(row = 3,column = 3,sticky = 'W');
 	# Row 4
 	PlayButton.grid(row = 4,column = 0,padx = 15,pady = 20,sticky = 'WE');
 	RandomQuesButton.grid(row = 4,column = 1,padx = 15,pady = 20,sticky = 'WE');
 	RankingButton.grid(row = 4,column = 2,padx = 15,pady = 20,sticky = 'WE');
+	LogOutButton.grid(row = 4,column = 3,padx = 15,pady = 20,sticky = 'WE');
 
 	# Animate the profile pic to move
 	framenumber = get_frame(PROFILE_PIC_LINK);
@@ -231,3 +233,5 @@ def ranking():
 	import ranking
 	ranking.show_ranking()
 
+def logout():
+	print("logout");
