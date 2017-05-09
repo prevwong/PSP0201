@@ -62,7 +62,6 @@ def quizUI(category, number):
     for i in range(0, len(questions)):
         options = questions[i]["options"]
 
-        
         Label(frame, 
           wraplength=500,
           text= parser.unescape(questions[i]["question"]),
@@ -136,11 +135,11 @@ def close():
     try:
         quizWindow.destroy();
     except TclError:
-        print "window closed"
+        print ""
     try:
         scoreboardWindow.destroy();
     except TclError:
-        print "window closed"
+        print ""
     profile.session_id = session_id
     profile.show_window()
 
