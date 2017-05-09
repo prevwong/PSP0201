@@ -64,10 +64,10 @@ def show_window():
         #ReadData(DATAFILEPATH);
         root = methods.defineWindow("AskTrivia", "640x480")
         root.minsize(height = 0,width = 100);
-        data = methods.readData("users.json");
-        name = data[session_id]['name'];
-        level = data[session_id]['level'];
-        description = data[session_id]['description'];
+        data = methods.getUserData(session_id);
+        name = data['name'];
+        level = data['level'];
+        description = data['description'];
         # Create Name text and descption text
         TitleLabel = Label(root,text = "Profile",font = ("Arial",22),anchor = W); 
         NameLabel = Label(root,text = name + " Lvl " + `level` + "",font = ("Arial",14),anchor = W);

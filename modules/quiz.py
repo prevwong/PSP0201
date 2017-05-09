@@ -5,7 +5,7 @@ import random
 import HTMLParser
 from Tkinter import *
 import ttk
-import guiquizselection 
+#import guiquizselection 
 import profile
 import methods
 
@@ -102,8 +102,9 @@ def retrieve(category, quantity):
         error = 1;
 
     if ( error == 1 ) :
-        jsonData = methods.readData("backup.json")
-        results = jsonData[category][quantity]
+        with open('data/backup.json', 'r') as outfile:
+                jsonData = json.load(outfile)
+        results = jsonData[str(category)][str(quantity)]
     else: 
         results = jsonData["results"]
     
@@ -184,15 +185,39 @@ def calculate_results(questions, answers):
     scoreboardWindow.title("Scoreboard")
     scoreboardWindow.geometry("700x400")
 
-    def expadder(correct):
-        users = methods.readData("users.json")
+    def expadder(correct):   
         exp = correct * 25
-        users[session_id]["exp"] += exp
-        users[session_id]["weeklyexp"] += exp     
-        users[session_id]["level"] = calculate_level(users[session_id]["exp"] / 25)    
-        methods.writeData(users, "users.json")
+        url = "http://localhost:5002/public/"
+        # Read JSON data from url
+        error = 0;
+        try:
+            response = urllib.urlopen(url)
+            try:
+                users = json.loads(response.read())
+            except ValueError:
+                error = 1;
+        except IOError:
+            error = 1;
+
+        print "error", error;
+        if ( error == 1 ) :
+            user = methods.readData("users.json")[session_id]
+            user["exp"] += exp
+            user["weeklyexp"] += exp     
+            user["level"] = calculate_level(user["exp"] / 25)    
+            methods.writeData(users, "users.json")
+        else:
+            print users;
+            user = users[str(session_id)]
+            newexp = exp + int(user["exp"])
+            level = calculate_level(user["exp"] / 25)  
+            methods.URLRequest("http://localhost:5002/updateexp/", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
+
         return exp 
-        
+
+
+
+
 
     label = Label(scoreboardWindow, text= "Score for this round:" + "\n" +str(percentage) + "%" )
     label.pack(side='top',pady=50)
