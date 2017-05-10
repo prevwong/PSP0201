@@ -7,7 +7,7 @@ import os.path
 import threading
 import methods
 import quiz
-
+import Authentication 
 #########################################
 # Variable Start here
 #########################################
@@ -267,4 +267,6 @@ def ranking():
     ranking.show_ranking()
 
 def logout():
-    print("logout");
+    root.destroy()
+    Authentication.show_window()
+    
