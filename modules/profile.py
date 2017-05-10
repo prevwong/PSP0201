@@ -80,6 +80,7 @@ def show_window():
         RandomQuesButton = Button(root,text = "Get a Random Question",command = random_ques);
         PlayButton = Button(root,text = "Play Now!",command = play);
         RankingButton = Button(root,text = "View Ranking",command = ranking);
+        LogoutButton = Button(root,text = "Logout",command = logout);
 
         #########################################
         # Profile Picture Initializating Start here
@@ -159,111 +160,111 @@ def choose_picture():
 
 
 def choose_picture():
-	"""Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""
-	global framenumber;
-	global frame_count;
-	global Profile_Pic;
-	global PROFILE_PIC_LINK;
-	global animaterun;
+    """Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""
+    global framenumber;
+    global frame_count;
+    global Profile_Pic;
+    global PROFILE_PIC_LINK;
+    global animaterun;
 
-	animaterun = False;
-	filename = askopenfilename(title='Profile Picture',
-									 filetypes= [('gif', '*.gif')] ,
-									initialdir="/");
-	if(filename != ""):
-		# Reset the frame count
-		frame_count = 0;
-		dest = os.path.dirname(PROFILE_PIC_LINK);
-		# Rmove the old profile picture file
-		os.remove(PROFILE_PIC_LINK);
-		# Copy the new one to the directory
-		copy(filename,dest);
-		# Rename the file to profile.gif
-		destpicname = dest + "\\" + filename.split('/')[-1];
-		os.rename(destpicname,PROFILE_PIC_LINK);
-		# Update the framenumber of new profile gif
-		framenumber = get_frame(PROFILE_PIC_LINK);
-	
-	animaterun = True;
-	animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
+    animaterun = False;
+    filename = askopenfilename(title='Profile Picture',
+                                     filetypes= [('gif', '*.gif')] ,
+                                    initialdir="/");
+    if(filename != ""):
+        # Reset the frame count
+        frame_count = 0;
+        dest = os.path.dirname(PROFILE_PIC_LINK);
+        # Rmove the old profile picture file
+        os.remove(PROFILE_PIC_LINK);
+        # Copy the new one to the directory
+        copy(filename,dest);
+        # Rename the file to profile.gif
+        destpicname = dest + "\\" + filename.split('/')[-1];
+        os.rename(destpicname,PROFILE_PIC_LINK);
+        # Update the framenumber of new profile gif
+        framenumber = get_frame(PROFILE_PIC_LINK);
+    
+    animaterun = True;
+    animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
 
 def is_animate(filename,index):
-	"""To check it is the frame in gif exists,
-	if then return true,
-	if not return false""" 
-	try:
-		# Set the format of reading gif
-		f = "gif -index " + str(index);
-		# Use exception since it will trigger error while frame not exists
+    """To check it is the frame in gif exists,
+    if then return true,
+    if not return false""" 
+    try:
+        # Set the format of reading gif
+        f = "gif -index " + str(index);
+        # Use exception since it will trigger error while frame not exists
 
-		# Trying to open the frame of gif
-		img = PhotoImage(file = filename,format=f);
-		return True;
-	except:
-		return False;
+        # Trying to open the frame of gif
+        img = PhotoImage(file = filename,format=f);
+        return True;
+    except:
+        return False;
 
 def get_frame(filename):
-	"""Check one frame by one frame to count how many frame in a gif,
-	return the number of frame in the end"""
-	count = 0;
-	while is_animate(filename,count):
-			count = count + 1;
-	return count;
+    """Check one frame by one frame to count how many frame in a gif,
+    return the number of frame in the end"""
+    count = 0;
+    while is_animate(filename,count):
+            count = count + 1;
+    return count;
 
 
 def animate(object,filename,speed = 0.1):
-	"""So function will keep running to animate a gif"""
-	# Increase the counter every time loop and change it back to original position after frame finish
-	global framenumber;
-	global frame_count;
-	global animaterun;
-	global PROFILE_WIDTH;
-	global PROFILE_HEIGHT
+    """So function will keep running to animate a gif"""
+    # Increase the counter every time loop and change it back to original position after frame finish
+    global framenumber;
+    global frame_count;
+    global animaterun;
+    global PROFILE_WIDTH;
+    global PROFILE_HEIGHT
 
-	if(animaterun == True):
-		try:
-			frame_count = frame_count + 1;
-			if(frame_count >= framenumber):
-					frame_count = 0;
+    if(animaterun == True):
+        try:
+            frame_count = frame_count + 1;
+            if(frame_count >= framenumber):
+                    frame_count = 0;
 
-			# Read the correct frame
-			fileformat = "gif -index " + str(frame_count);
-			loaded_img = PhotoImage(file = filename,format=fileformat);
+            # Read the correct frame
+            fileformat = "gif -index " + str(frame_count);
+            loaded_img = PhotoImage(file = filename,format=fileformat);
 
-			# Resize it to proper size
-			img = loaded_img.subsample(loaded_img.width() / PROFILE_WIDTH,loaded_img.height() / PROFILE_HEIGHT);
+            # Resize it to proper size
+            img = loaded_img.subsample(loaded_img.width() / PROFILE_WIDTH,loaded_img.height() / PROFILE_HEIGHT);
 
-			# Replace with the new frame
-			object.configure(image = img);
-			object.image = img;
-			# Keep run this function every {speed} second
-			threading.Timer(speed,animate,[object,filename]).start();  
-		except:
-			print "";
+            # Replace with the new frame
+            object.configure(image = img);
+            object.image = img;
+            # Keep run this function every {speed} second
+            threading.Timer(speed,animate,[object,filename]).start();  
+        except:
+            print "";
 
 def save_des():
-	"""Get the description from box and write it into the file"""
-	users = methods.readData("users.json")
-	# Get the input
-	temp = DesLabel.get(1.0,END);
-	# Remove the \n and edit the data
-	des = temp.replace("\n","");
-	users[session_id]["description"] = des;
-	# Write it into the json file
-	methods.writeData(users, "users.json")
+    """Get the description from box and write it into the file"""
+    users = methods.readData("users.json")
+    # Get the input
+    temp = DesLabel.get(1.0,END);
+    # Remove the \n and edit the data
+    des = temp.replace("\n","");
+    users[session_id]["description"] = des;
+    # Write it into the json file
+    methods.writeData(users, "users.json")
 
 
 def random_ques():
-	quiz.session_id = session_id
-	root.destroy()
-	quiz.quizUI(9,1) 
+    quiz.session_id = session_id
+    root.destroy()
+    quiz.quizUI(9,1) 
 def play():
-	quiz.session_id = session_id
-	root.destroy()
-	quiz.selection()
+    quiz.session_id = session_id
+    root.destroy()
+    quiz.selection()
 def ranking():
-	import ranking
-	ranking.show_ranking()
+    import ranking
+    ranking.show_ranking()
 
 def logout():
-	print("logout");
+    print("logout");
