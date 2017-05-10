@@ -7,7 +7,8 @@ import os.path
 import threading
 import methods
 import quiz
-import Authentication 
+import Authentication
+import tkMessageBox
 #########################################
 # Variable Start here
 #########################################
@@ -80,7 +81,7 @@ def show_window():
         RandomQuesButton = Button(root,text = "Get a Random Question",command = random_ques);
         PlayButton = Button(root,text = "Play Now!",command = play);
         RankingButton = Button(root,text = "View Ranking",command = ranking);
-        LogoutButton = Button(root,text = "Logout",command = logout);
+        LogoutButton = Button(root,text = "Logout",command = lambda: logout(data["name"]));
 
         #########################################
         # Profile Picture Initializating Start here
@@ -266,7 +267,12 @@ def ranking():
     import ranking
     ranking.show_ranking()
 
-def logout():
-    root.destroy()
-    Authentication.show_window()
+def logout(name):
+    result = tkMessageBox.askquestion("Logout Confirmation", "Are you sure you want to logout?", icon='warning')
+    if result == 'yes':
+        message = "See you again, " + name + "!"
+        tkMessageBox.showinfo("Thank you", message)
+        root.destroy()
+        Authentication.show_window()
+
     
