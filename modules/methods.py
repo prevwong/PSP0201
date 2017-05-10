@@ -2,6 +2,9 @@
 import os
 import json
 import Tkinter
+import urllib2
+import urllib
+
 
 def loopList(items):
 	for i in items:
@@ -25,14 +28,35 @@ def locateFile(filename):
 
 
 
+def readOnlineJson(url):
+    # Read JSON data from url
+    error = 0;
+    try:
+        response = urllib.urlopen(url)
+        try:
+            jsonData = json.loads(response.read())
+        except ValueError:
+            error = 1;
+    except IOError:
+        error = 1;
+
+    if ( error == 1 ) :
+        return False;
+    else:
+        return jsonData
+
 def readData(filename):
         json_file = locateFile(filename)
         if json_file.endswith(".json"):
-                with open(json_file, "r") as infile:
-                        users = json.load(infile)
-                return users
+            print "hi"
+            with open(json_file, "r") as infile:
+                try:
+                    users = json.load(infile)
+                except ValueError:
+                    users = {}
+            return users
         else:
-                return json_file
+            return json_file
 
 def writeData(data, filename):
         json_file = locateFile(filename)
@@ -69,5 +93,23 @@ def backupQuestions():
         with open('data/backup.json', 'w') as outfile:
                 json.dump(obj, outfile)
 
+def URLRequest(url, params):
+    data = urllib.urlencode(params)
+    try:
+        req = urllib2.Request(url, data)
+        response = urllib2.urlopen(req)
+        return response.read()
+    except:
+        return None;
 
+def getUserData(session_id):
+    if (URLRequest("http://localhost:5002/user/", {"id" : session_id}) != None) :
+        data = URLRequest("http://localhost:5002/user/", {"id" : session_id})
+        return json.loads(data);
+    else:
+        data = readData("users.json");
+        return data[session_id];
 
+#URLRequest("http://localhost:5002/adduser/", { "name" : "prevwong", "password" : "imgeneva", "description" : "Hello world!" })
+
+#print URLRequest("http://localhost:5002/usernames/", {})

@@ -38,93 +38,125 @@ RankingButton = "";
 #########################################
 
 def show_window():
-	'''To initialize window'''
-	#########################################
-	# Text Initializating Start here
-	#########################################
-	# Read the information of user from data
-	global TitleLabel;
-	global Profile_Pic;
-	global NameLabel;
-	global DesTitleLabel;
-	global DesLabel;
-	global SaveDesButton;
-	global PlayButton;
-	global RandomQuesButton;
-	global RankingButton;
-	global PROFILE_HEIGHT;
-	global PROFILE_WIDTH;
-	global PROFILE_PIC_LINK;
-	global DATAFILEPATH;
-	global root;
-	global framenumber;
-	#SetPath();
-	#ReadData(DATAFILEPATH);
-	root = methods.defineWindow("AskTrivia", "640x480")
-	root.minsize(height = 0,width = 100);
-	data = methods.readData("users.json");
-	name = data[session_id]['name'];
-	level = data[session_id]['level'];
-	description = data[session_id]['description'];
-	# Create Name text and descption text
-	TitleLabel = Label(root,text = "Profile",font = ("Arial",22),anchor = W); 
-	NameLabel = Label(root,text = name + " Lvl " + `level` + "",font = ("Arial",14),anchor = W);
-	DesTitleLabel = Label(root,text = "Description",font = ("Arial",10),anchor = W);
-	DesLabel = Text(root,font = ("Arial",11),width = 75, height = 4);
-	# Insert Previous Data
-	DesLabel.insert(INSERT,description);
-	# Create Button
-	SaveDesButton = Button(root,text = "Save",command = save_des);
-	RandomQuesButton = Button(root,text = "Get a Random Question",command = random_ques);
-	PlayButton = Button(root,text = "Play Now!",command = play);
-	RankingButton = Button(root,text = "View Ranking",command = ranking);
-	LogOutButton = Button(root,text = "Logout",command = logout);
+        '''To initialize window'''
 
-	#########################################
-	# Profile Picture Initializating Start here
-	#########################################
+        """To Initializating the element """
+        #########################################
+        # Text Initializating Start here
+        #########################################
+        # Read the information of user from data
+        global TitleLabel;
+        global Profile_Pic;
+        global NameLabel;
+        global DesTitleLabel;
+        global DesLabel;
+        global SaveDesButton;
+        global PlayButton;
+        global RandomQuesButton;
+        global RankingButton;
+        global PROFILE_HEIGHT;
+        global PROFILE_WIDTH;
+        global PROFILE_PIC_LINK;
+        global DATAFILEPATH;
+        global root;
+        global framenumber;
+        #SetPath();
+        #ReadData(DATAFILEPATH);
+        root = methods.defineWindow("AskTrivia", "640x480")
+        root.minsize(height = 0,width = 100);
+        data = methods.getUserData(session_id);
+        name = data['name'];
+        level = data['level'];
+        description = data['description'];
+        # Create Name text and descption text
+        TitleLabel = Label(root,text = "Profile",font = ("Arial",22),anchor = W); 
+        NameLabel = Label(root,text = name + " Lvl " + `level` + "",font = ("Arial",14),anchor = W);
+        DesTitleLabel = Label(root,text = "Description",font = ("Arial",10),anchor = W);
+        DesLabel = Text(root,font = ("Arial",11),width = 60, height = 4);
+        # Insert Previous Data
+        DesLabel.insert(INSERT,description);
+        # Create Button
+        SaveDesButton = Button(root,text = "Save",command = save_des);
+        RandomQuesButton = Button(root,text = "Get a Random Question",command = random_ques);
+        PlayButton = Button(root,text = "Play Now!",command = play);
+        RankingButton = Button(root,text = "View Ranking",command = ranking);
 
-	# Read profile picture
-	fileformat = "gif -index 0"; # A format to read the frame of gif
-	loaded_img = PhotoImage(file = PROFILE_PIC_LINK,format=fileformat);
-	# Resize the profile picture to proper size
-	img = loaded_img.subsample(loaded_img.width() / PROFILE_WIDTH,loaded_img.height() / PROFILE_HEIGHT);
-	# Create profile picture
-	Profile_Pic = Button(root,bd = 0,command = choose_picture ,image = img,bg = "white",height = img.height(),width = img.width());
+        #########################################
+        # Profile Picture Initializating Start here
+        #########################################
 
-	#########################################
-	# Position Part
-	#########################################
-	# Place label on suitable position
-	root.rowconfigure(0, weight=1);
-	root.rowconfigure(1, weight=1);
-	root.rowconfigure(2, weight=1);
-	root.rowconfigure(3, weight=1);
-	root.rowconfigure(4, weight=1);
-	root.columnconfigure(0, weight=1);
-	root.columnconfigure(1, weight=1);
-	root.columnconfigure(2, weight=2);
-	
-	# Row 0
-	TitleLabel.grid(row = 0,column = 0,ipady = 10,ipadx = 10,padx = 10,pady = 10,columnspan = 4);
-	# Row 1
-	Profile_Pic.grid(row = 1,column = 0,sticky = W,ipady = 10,ipadx = 10,padx = 30,pady = 20);
-	NameLabel.grid(row = 1,column = 1,ipady = 10,ipadx = 10,padx = 20,pady = 10,sticky = 'ESNW',columnspan = 3);
-	# Row 2
-	DesTitleLabel.grid(row = 2,column = 0,padx = 12,sticky = W,columnspan = 4);
-	# Row 3
-	DesLabel.grid(row = 3,column = 0,padx = 10,columnspan = 2);
-	SaveDesButton.grid(row = 3,column = 3,sticky = 'W');
-	# Row 4
-	PlayButton.grid(row = 4,column = 0,padx = 15,pady = 20,sticky = 'WE');
-	RandomQuesButton.grid(row = 4,column = 1,padx = 15,pady = 20,sticky = 'WE');
-	RankingButton.grid(row = 4,column = 2,padx = 15,pady = 20,sticky = 'WE');
-	LogOutButton.grid(row = 4,column = 3,padx = 15,pady = 20,sticky = 'WE');
+        # Read profile picture
+        fileformat = "gif -index 0"; # A format to read the frame of gif
+        loaded_img = PhotoImage(file = PROFILE_PIC_LINK,format=fileformat);
+        # Resize the profile picture to proper size
+        img = loaded_img.subsample(loaded_img.width() / PROFILE_WIDTH,loaded_img.height() / PROFILE_HEIGHT);
+        # Create profile picture
+        Profile_Pic = Button(root,bd = 0,command = choose_picture ,image = img,bg = "white",height = img.height(),width = img.width());
 
-	# Animate the profile pic to move
-	framenumber = get_frame(PROFILE_PIC_LINK);
-	animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
-	root.mainloop();
+        #########################################
+        # Position Part
+        #########################################
+        # Place label on suitable position
+        root.rowconfigure(0, weight=1);
+        root.rowconfigure(1, weight=1);
+        root.rowconfigure(2, weight=1);
+        root.rowconfigure(3, weight=1);
+        root.rowconfigure(4, weight=1);
+        root.columnconfigure(0, weight=1);
+        root.columnconfigure(1, weight=1);
+        root.columnconfigure(2, weight=1);
+        root.columnconfigure(3, weight=1);
+        
+        # Row 0
+        TitleLabel.grid(row = 0,column = 0,ipady = 10,ipadx = 10,padx = 10,pady = 10,columnspan = 4);
+        # Row 1
+        Profile_Pic.grid(row = 1,column = 0,sticky = W,ipady = 10,ipadx = 10,padx = 30,pady = 20);
+        NameLabel.grid(row = 1,column = 1,ipady = 10,ipadx = 10,padx = 20,pady = 10,sticky = 'ESNW',columnspan = 3);
+        # Row 2
+        DesTitleLabel.grid(row = 2,column = 0,padx = 12,sticky = W,columnspan = 4);
+        # Row 3
+        DesLabel.grid(row = 3,column = 0,padx = 10,columnspan = 3);
+        SaveDesButton.grid(row = 3,column = 3,sticky = 'W');
+        # Row 4
+        PlayButton.grid(row = 4,column = 0,padx = 15,pady = 20,sticky = 'WE');
+        RandomQuesButton.grid(row = 4,column = 1,padx = 15,pady = 20,sticky = 'WE');
+        RankingButton.grid(row = 4,column = 2,padx = 15,pady = 20,sticky = 'WE');
+        LogoutButton.grid(row = 4,column = 3,padx = 15,pady = 20,sticky = 'WE');
+
+        # Animate the profile pic to move
+        framenumber = get_frame(PROFILE_PIC_LINK);
+        animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
+
+        root.mainloop();
+def choose_picture():
+        """Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""
+        global framenumber;
+        global frame_count;
+        global Profile_Pic;
+        global PROFILE_PIC_LINK;
+        global animaterun;
+
+        animaterun = False;
+        filename = askopenfilename(title='Profile Picture',
+                                                 filetypes= [('gif', '*.gif')] ,
+                                                initialdir="/");
+        if(filename != ""):
+                # Reset the frame count
+                frame_count = 0;
+                dest = os.path.dirname(PROFILE_PIC_LINK);
+                # Rmove the old profile picture file
+                os.remove(PROFILE_PIC_LINK);
+                # Copy the new one to the directory
+                copy(filename,dest);
+                # Rename the file to profile.gif
+                destpicname = dest + "\\" + filename.split('/')[-1];
+                os.rename(destpicname,PROFILE_PIC_LINK);
+                # Update the framenumber of new profile gif
+                framenumber = get_frame(PROFILE_PIC_LINK);
+        
+        animaterun = True;
+        animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
+
 
 def choose_picture():
 	"""Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""

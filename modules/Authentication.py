@@ -4,6 +4,9 @@ import json
 import os
 import methods
 import profile
+import urllib
+import urllib2
+
 def encrypt(string):
         result = ""
         for i in xrange(0,len(string)):
@@ -17,38 +20,75 @@ def decrypt(string):
         return result
     
 def submit(username,password,password_confirmation):
-        
-        if len(username) <6:
-                
-                tkMessageBox.showerror("Error","Minimum length of username is 6")
-                return
-        if len(password)<6:
-                tkMessageBox.showerror("Error","Minimum length of password is 6")
-                return
-        if password_confirmation != password:
-                tkMessageBox.showerror("Error","Both Passwords did not match. Try Again")
-                return
-        
-        users = methods.readData("users.json")
-        for i in range (0,len(users)):
-                if users[str(i)]["name"] == username:
-                        tkMessageBox.showerror("Error","Username:"+username+" has been taken")
-                        break
-                elif i == len(users)-1:
-                        new_id = len(users)
-                        users[new_id] = {}
-                        users[new_id]["name"]= username
-                        users[new_id]["password"] = encrypt(password)
-                        users[new_id]["description"] = "Set Your Description"
-                        users[new_id]["exp"]=0
-                        users[new_id]["weeklyexp"]=0
-                        users[new_id]["level"] = 1
-                                
-                        methods.writeData(users, "users.json")
-                                
-                        tkMessageBox.showinfo("Done","Register Successfully!")
-                
-                
+
+      '''
+      if len(username) <6:
+         tkMessageBox.showerror("Error","Minimum length of username is 6")
+         return
+      if len(password)<6:
+         tkMessageBox.showerror("Error","Minimum length of password is 6")
+         return
+      if password_confirmation != password:
+         tkMessageBox.showerror("Error","Both Passwords did not match. Try Again")
+         return
+
+      '''
+      users = methods.readData("users.json")
+
+      url = "http://localhost:5002/usernames/"
+      # Read JSON data from url
+      error = 0;
+      try:
+         response = urllib.urlopen(url)
+         try:
+            data = json.loads(response.read())
+         except ValueError:
+            error = 1;
+      except IOError:
+         error = 1;
+
+
+      if ( error == 1 ) :
+         '''
+         for i in range (0,len(users)):
+            if users[str(i)]["name"] == username:
+               tkMessageBox.showerror("Error","Username:"+username+" has been taken")
+               break
+            elif i == len(users)-1:
+               new_id = len(users)
+               users[new_id] = {}
+               users[new_id]["name"]= username
+               users[new_id]["password"] = encrypt(password)
+               users[new_id]["description"] = "Set Your Description"
+               users[new_id]["exp"]=0
+               users[new_id]["weeklyexp"]=0
+               users[new_id]["level"] = 1
+                       
+               methods.writeData(users, "users.json")
+               post(users)       
+               tkMessageBox.showinfo("Done","Register Successfully!")
+         '''
+         tkMessageBox.showinfo("Error","Internet connection/Server down")
+      else:
+         users = data["users"]
+         error = 0;
+         for i in users:
+            if username == i :
+               error = 1;
+               break;
+         if ( error == 1 ) :
+            print "username has been taken"
+            tkMessageBox.showerror("Error","Username:"+username+" has been taken")
+         else:
+            newUser = methods.URLRequest("http://localhost:5002/adduser/", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+            users = methods.readData("users.json")
+            users[json.loads(newUser)["id"]] = {"name" : username, "password" : encrypt(password), "description" : "Set your description", "exp" : 0, "weekly_exp" : 0, "level" : 1}
+            methods.writeData(users, "users.json")
+            tkMessageBox.showinfo("Done","Register Successfully!")
+
+def post(users):
+    methods.URLRequest("http://localhost:2000/test/", { "users" : users }, "POST");
+
 def Back():
     RegWindow.withdraw()
     LogWindow.deiconify()
@@ -59,19 +99,37 @@ def Register():
         
 def login(username, password):
 
-        users = methods.readData("users.json") 
+   users = methods.readData("users.json") 
 
-        for i in range(0,len(users)):
+   request = methods.URLRequest("http://localhost:5002/loginUser/", { "name" : username })
 
-                if users[str(i)]["name"] == username and decrypt(users[str(i)]["password"])==password:
-                        tkMessageBox.showinfo("Done","Login Successfully!")
-                        LogWindow.destroy()
-                        RegWindow.destroy()
-                        profile.session_id = str(i)
-                        profile.show_window()
-                        break
-                elif i == len(users) - 1:
-                        tkMessageBox.showerror("Error","Please Try Again!")
+   if ( request != None ):
+      response = json.loads(request);
+      
+      if ( request == False or decrypt(response["password"]) != password ):
+         tkMessageBox.showerror("Error","Please Try Again!")
+      else:
+            tkMessageBox.showinfo("Done","Login Successfully!")
+         
+
+            LogWindow.destroy()
+            RegWindow.destroy()
+            profile.session_id = response["id"]
+            profile.show_window()
+
+   else:
+      print "logging in locally"
+      print len(users)
+      for i in users:
+         if users[str(i)]["name"] == username and decrypt(users[str(i)]["password"])==password:
+            tkMessageBox.showinfo("Done","Login Successfully!")
+            LogWindow.destroy()
+            RegWindow.destroy()
+            profile.session_id = str(i)
+            profile.show_window()
+            break
+         elif i == len(users) - 1:
+            tkMessageBox.showerror("Error","Please Try Again!")
 
 
 def show_window():
@@ -143,5 +201,6 @@ def show_window():
         backButton.grid(row=6,column=4)
 
 
-
         LogWindow.mainloop()
+
+#submit("prev", "imgenev", "imgenev")

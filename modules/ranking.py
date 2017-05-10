@@ -7,6 +7,7 @@ from threading import Timer
 from multiprocessing import Process
 import time
 import methods
+import urllib
 
 ######################
 # Functions required during UI rendering
@@ -47,8 +48,22 @@ def reset_after(days = 7):
 def show_ranking():
     
     #Initialize users JSON
-    users = methods.readData("users.json")
-    
+
+    url = "http://localhost:5002/public/"
+    # Read JSON data from url
+    error = 0;
+    try:
+        response = urllib.urlopen(url)
+        try:
+            users = json.loads(response.read())
+        except ValueError:
+            error = 1;
+    except IOError:
+        error = 1;
+
+    if ( error == 1 ) :
+        users = methods.readData("users.json")
+
     ###UI positioning###
     
     root = methods.defineWindow("AskTrivia Leaderboard", "320x400")
@@ -95,14 +110,14 @@ def show_ranking():
     name_text.grid(row=2,column = 2, columnspan = 2)
     exp_text.grid(row=2,column = 4, columnspan = 2)
 
-    rank_by_exp = sort_exp("weeklyexp",users)
+    rank_by_exp = sort_exp("weekly_exp",users)
     if len(rank_by_exp) >= 1:
         for i in range(1, len(rank_by_exp)+1):
             if i == 11:
                 break
             rank = Label(weeklyexp_frame, text = str(i)).grid(row = i + 2, column = 0, columnspan = 2)
             name = Label(weeklyexp_frame, text = rank_by_exp[i]["name"]).grid(row = i + 2, column = 2, columnspan = 2, sticky = W)
-            exp = Label(weeklyexp_frame, text = rank_by_exp[i]["weeklyexp"]).grid(row = i + 2, column = 4, columnspan = 2, sticky = E)
+            exp = Label(weeklyexp_frame, text = rank_by_exp[i]["weekly_exp"]).grid(row = i + 2, column = 4, columnspan = 2, sticky = E)
             
 
     root.mainloop()
