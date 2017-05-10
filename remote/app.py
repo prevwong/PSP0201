@@ -114,8 +114,8 @@ def loginUser():
 	if ( checkUser(name) ): 
 		response = { "password" : getUser(name)["password"], "id": getUser(name)["id"], "name": getUser(name)["name"], "exp": getUser(name)["exp"], "weekly_exp" : getUser(name)["weekly_exp"], "level" : getUser(name)["level"] }
 		return jsonify(response)
-	
-	return False;
+	else: 
+		return jsonify({"error" : True})
 
 @app.route("/user/", methods=["POST"])
 def user():
@@ -131,4 +131,4 @@ if __name__ == "__main__":
 		#print getUser("prevwong")["exp"]
 		#print getUser(False, 1)
 		#print checkUser("prevwong") 
-		app.run(port=5002)
+		app.run(host="0.0.0.0", port=5002)
