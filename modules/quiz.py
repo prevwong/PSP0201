@@ -243,7 +243,7 @@ def selection():
 
     category_var = StringVar(master)
     category_var.set("Random") #default value
-    category = ttk.Combobox(master, textvariable = category_var, values = ["Random","Books","Film","Music","Musicals & Theatres","Television","Video Games","Board Games",
+    category = ttk.Combobox(master, state = "readonly", textvariable = category_var, values = ["Random","Books","Film","Music","Musicals & Theatres","Television","Video Games","Board Games",
                                                                            "Science & Nature","Computers","Mathematics","Mythology","Sports","Geography","History","Politics","Art",
                                                                            "Celebrities","Animals","Vehicles","Comics","Gadgets","Japanese Anime & Manga","Cartoon & Animations"])
     category.pack()
@@ -251,7 +251,7 @@ def selection():
     
     number_var = StringVar(master)
     number_var.set("5") #default value
-    num = ttk.Combobox(master, textvariable = number_var, values=["5","10","15","20"])
+    num = ttk.Combobox(master, state = "readonly", textvariable = number_var, values=["5","10","15","20"])
     num.pack()
     num.place(relx=.5,rely=.5,anchor="center")
 
