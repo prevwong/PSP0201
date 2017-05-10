@@ -35,7 +35,7 @@ def submit(username,password,password_confirmation):
       '''
       users = methods.readData("users.json")
 
-      url = "http://localhost:5002/usernames/"
+      url = "http://35.166.173.190/usernames/"
       # Read JSON data from url
       error = 0;
       try:
@@ -80,14 +80,12 @@ def submit(username,password,password_confirmation):
             print "username has been taken"
             tkMessageBox.showerror("Error","Username:"+username+" has been taken")
          else:
-            newUser = methods.URLRequest("http://localhost:5002/adduser/", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+            newUser = methods.URLRequest("http://35.166.173.190/adduser/", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
             users = methods.readData("users.json")
             users[json.loads(newUser)["id"]] = {"name" : username, "password" : encrypt(password), "description" : "Set your description", "exp" : 0, "weekly_exp" : 0, "level" : 1}
             methods.writeData(users, "users.json")
             tkMessageBox.showinfo("Done","Register Successfully!")
 
-def post(users):
-    methods.URLRequest("http://localhost:2000/test/", { "users" : users }, "POST");
 
 def Back():
     RegWindow.withdraw()
@@ -101,8 +99,9 @@ def login(username, password):
 
    users = methods.readData("users.json") 
 
-   request = methods.URLRequest("http://localhost:5002/loginUser/", { "name" : username })
+   request = methods.URLRequest("http://35.166.173.190:5002/loginUser/", { "name" : username })
 
+   print request
    if ( request != None ):
       response = json.loads(request);
       
@@ -119,8 +118,9 @@ def login(username, password):
 
    else:
       print "logging in locally"
-      print len(users)
+      counter = 0;
       for i in users:
+         counter = counter + 1
          if users[str(i)]["name"] == username and decrypt(users[str(i)]["password"])==password:
             tkMessageBox.showinfo("Done","Login Successfully!")
             LogWindow.destroy()
@@ -128,8 +128,13 @@ def login(username, password):
             profile.session_id = str(i)
             profile.show_window()
             break
-         elif i == len(users) - 1:
-            tkMessageBox.showerror("Error","Please Try Again!")
+         else:
+            if (counter == len(users) - 1) :
+               tkMessageBox.showerror("Error","Please Try Again!")
+               break;
+            else:
+               continue;
+         
 
 
 def show_window():
