@@ -186,7 +186,7 @@ def calculate_results(questions, answers):
 
     def expadder(correct):   
         exp = correct * 25
-        url = "http://localhost:5002/public/"
+        url = "http://35.166.173.190:5002/public/"
         # Read JSON data from url
         error = 0;
         try:
@@ -210,7 +210,7 @@ def calculate_results(questions, answers):
             user = users[str(session_id)]
             newexp = exp + int(user["exp"])
             level = calculate_level(user["exp"] / 25)  
-            methods.URLRequest("http://localhost:5002/updateexp/", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
+            methods.URLRequest("http://35.166.173.190:5002/updateexp/", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
 
         return exp 
 

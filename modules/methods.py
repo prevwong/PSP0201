@@ -103,8 +103,8 @@ def URLRequest(url, params):
         return None;
 
 def getUserData(session_id):
-    if (URLRequest("http://localhost:5002/user/", {"id" : session_id}) != None) :
-        data = URLRequest("http://localhost:5002/user/", {"id" : session_id})
+    if (URLRequest("http://35.166.173.190:5002/user/", {"id" : session_id}) != None) :
+        data = URLRequest("http://35.166.173.190:5002/user/", {"id" : session_id})
         return json.loads(data);
     else:
         data = readData("users.json");
