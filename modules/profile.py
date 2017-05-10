@@ -7,7 +7,7 @@ import os.path
 import threading
 import methods
 import quiz
-import Authentication 
+import authentication 
 #########################################
 # Variable Start here
 #########################################
