@@ -104,8 +104,8 @@ def login(username, password):
    print request
    if ( request != None ):
       response = json.loads(request);
-      
-      if ( request == False or decrypt(response["password"]) != password ):
+      print response
+      if ( ( "error" in response and response["error"] == True ) or decrypt(response["password"]) != password ):
          tkMessageBox.showerror("Error","Please Try Again!")
       else:
             tkMessageBox.showinfo("Done","Login Successfully!")
