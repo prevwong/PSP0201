@@ -72,7 +72,7 @@ def updateexp():
 	weekly_exp = request.form["weekly_exp"];
 	level = request.form["level"]
 	update_user_exp(user_id, exp, weekly_exp, level);
-	return render_template("index.html")
+	return jsonify({"success" : True})
 
 
 

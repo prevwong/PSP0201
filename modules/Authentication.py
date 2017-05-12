@@ -33,40 +33,27 @@ def submit(username,password,password_confirmation):
          return
 
       data = methods.readRemoteJson("usernames")
+      # If connection to remote server failed due to internet failure or error in request
       if ( data == False ) :
-         '''
-         for i in range (0,len(users)):
-            if users[str(i)]["name"] == username:
-               tkMessageBox.showerror("Error","Username:"+username+" has been taken")
-               break
-            elif i == len(users)-1:
-               new_id = len(users)
-               users[new_id] = {}
-               users[new_id]["name"]= username
-               users[new_id]["password"] = encrypt(password)
-               users[new_id]["description"] = "Set Your Description"
-               users[new_id]["exp"]=0
-               users[new_id]["weeklyexp"]=0
-               users[new_id]["level"] = 1
-                       
-               methods.writeData(users, "users.json")
-               post(users)       
-               tkMessageBox.showinfo("Done","Register Successfully!")
-         '''
          tkMessageBox.showinfo("Error","Internet connection/Server down")
       else:
-         users = data["users"]
          error = 0;
-         for i in users:
-            if username == i :
-               error = 1;
-               break;
-         if ( error == 1 ) :
-            print "username has been taken"
-            tkMessageBox.showerror("Error","Username:"+username+" has been taken")
+
+         # If there are users currently existing in the remote database, check:
+         if ( data != None ) : 
+            users = data["users"]
+            for i in users:
+              if username == i :
+                 error = 1;
+                 break;
+            if ( error == 1 ) :
+              print "username has been taken"
+              tkMessageBox.showerror("Error","Username:"+username+" has been taken")
 
          else:
+            # Send a POST request to adduser/ with parameters: name, password, description. These parameters will be stored in the remote database.
             newUser = methods.postRemote("adduser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+            # Save users profile locally as well
             users = methods.readData("users.json")
             users[json.loads(newUser)["id"]] = {"name" : username, "password" : encrypt(password), "description" : "Set your description", "exp" : 0, "weekly_exp" : 0, "level" : 1}
             methods.writeData(users, "users.json")
@@ -86,8 +73,11 @@ def login(username, password):
    request = methods.postRemote("loginUser", { "name" : username })
 
    print request
+
+   # If request did not fail: 
    if ( request != None ):
       data = json.loads(request);
+      # If there are errors ( caused by non-existing username ) and password does not match the password stored in the database:
       if ( ( "error" in data and data["error"] == True ) or decrypt(data["password"]) != password ):
          tkMessageBox.showerror("Error","Please Try Again!")
       else:
@@ -97,6 +87,7 @@ def login(username, password):
             profile.session_id = data["id"]
             profile.show_window()
    else:
+      # If request to remote server failed, log in locally
       print "logging in locally"
       users = methods.readData("users.json") 
       counter = 0;

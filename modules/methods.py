@@ -27,24 +27,6 @@ def locateFile(filename):
         return temp_path + DATA_DIR
 
 
-def readRemoteJson(url):
-    url = "http://52.36.70.190:5002/" + str(url)
-    # Read JSON data from url
-    error = 0;
-    try:
-     response = urllib.urlopen(url)
-     try:
-        data = json.loads(response.read())
-     except ValueError:
-        error = 1;
-    except IOError:
-     error = 1;
-
-    if ( error == 1 ) :
-        return False;
-    else:
-        return data;
-
 def readData(filename):
         requestedFile = locateFile(filename)
         if requestedFile.endswith(".json"):
@@ -93,22 +75,57 @@ def backupQuestions():
         with open('data/backup.json', 'w') as outfile:
                 json.dump(obj, outfile)
 
+def readRemoteJson(url):
+    url = "http://52.36.70.190:5002/" + str(url)
+    error = 0;
+
+
+    try:
+     # Send a HTTP request to url
+     response = urllib.urlopen(url)
+     try:
+        # If the request did not fail, load the JSON data returned from the url
+        data = json.loads(response.read())
+        # Check if there are errors ( most likely caused if there are no data at all in database )
+        if ( "error" in data and data["error"] ):
+            # If there are errors, return None instead of False so we can differentiate the failure when calling this function
+            return None;
+     except:
+        # If there was any sort of error, set error = 1
+        error = 1;
+    except:
+     # If there was any sort of error, set error = 1
+     error = 1;
+
+
+    if ( error == 1 ) :
+        return False;
+    else:
+        return data;
+
 def postRemote(path, params):
     url = "http://52.36.70.190:5002/" + path + "/"
-    print url
+    # Converts parms{} into a series of key=value pairs to create a sucessful POST request. Eg: {key1: value1, key2:value2} => "key1=value1&key2=value2"
     data = urllib.urlencode(params)
     try:
+        # Create an URL request
         req = urllib2.Request(url, data)
+        # Opens the URL, the output is a file-like object
         response = urllib2.urlopen(req)
+        # Calling the .read() method of urlopen returns the content of requested URL ( most likely a string )
         return response.read()
     except:
         return None;
 
 def getUserData(session_id):
+    # If sending a POST request to user/ with session_id succeeded:
     if (postRemote("user", {"id" : session_id}) != None) :
+        # Send a POST request to grab user's data
         data = postRemote("user", {"id" : session_id})
+        # Return a Dictionary from JSON object
         return json.loads(data);
     else:
+        # If failed, just read the local users.json file
         data = readData("users.json");
         return data[session_id];
 
