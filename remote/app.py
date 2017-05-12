@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, g, jsonify
 import sqlite3 as sql
+import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE = os.path.join(BASE_DIR, "database.db")
