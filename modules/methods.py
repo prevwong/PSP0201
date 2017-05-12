@@ -127,7 +127,7 @@ def getUserData(session_id):
     else:
         # If failed, just read the local users.json file
         data = readData("users.json");
-        return data[session_id];
+        return data[str(session_id)];
 
 #URLRequest("http://localhost:5002/adduser/", { "name" : "prevwong", "password" : "imgeneva", "description" : "Hello world!" })
 

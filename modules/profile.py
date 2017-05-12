@@ -250,9 +250,11 @@ def save_des():
     temp = DesLabel.get(1.0,END);
     # Remove the \n and edit the data
     des = temp.replace("\n","");
-    users[session_id]["description"] = des;
+    users[str(session_id)]["description"] = des;
     # Write it into the json file
     methods.writeData(users, "users.json")
+
+    methods.postRemote("updateDescription", { "id" : session_id, "description" : des })
 
 
 def random_ques():

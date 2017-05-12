@@ -215,7 +215,7 @@ def calculate_results(questions, answers):
             user = usersRemote[str(session_id)]
             newexp = exp + int(user["exp"])
             level = calculate_level(user["exp"] / 25)  
-            methods.postRemote("updateexp", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
+            methods.postRemote("updateExp", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
             updateLocally(exp)
             
         return exp 

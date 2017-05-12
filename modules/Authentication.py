@@ -51,8 +51,8 @@ def submit(username,password,password_confirmation):
               tkMessageBox.showerror("Error","Username:"+username+" has been taken")
 
          else:
-            # Send a POST request to adduser/ with parameters: name, password, description. These parameters will be stored in the remote database.
-            newUser = methods.postRemote("adduser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+            # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
+            newUser = methods.postRemote("addUser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
             # Save users profile locally as well
             saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
             tkMessageBox.showinfo("Done","Register Successfully!")
@@ -105,7 +105,7 @@ def login(username, password):
             profile.show_window()
             break
          else:
-            if (counter == len(users) - 1) :
+            if (counter == len(users)) :
                tkMessageBox.showerror("Error","Please Try Again!")
                break;
             else:
@@ -114,6 +114,7 @@ def login(username, password):
 
 
 def show_window():
+  try:
         global LogWindow, RegWindow
         #First Window
         LogWindow = Tk()
@@ -183,6 +184,8 @@ def show_window():
 
 
         LogWindow.mainloop()
+  except:
+    return False;
         
 
 
