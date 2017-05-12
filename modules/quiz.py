@@ -183,6 +183,14 @@ def calculate_results(questions, answers):
     scoreboardWindow.title("Scoreboard")
     scoreboardWindow.geometry("700x400")
 
+    def updateLocally(exp):
+        users = methods.readData("users.json")
+        user = users[session_id]
+        user["exp"] += exp
+        user["weekly_exp"] += exp     
+        user["level"] = calculate_level(user["exp"] / 25)    
+        methods.writeData(users, "users.json")
+
     def expadder(correct):   
         exp = correct * 25
         url = "http://52.36.70.190:5002/public/"
@@ -202,18 +210,14 @@ def calculate_results(questions, answers):
         usersRemote = methods.readRemoteJson("public")
 
         if ( usersRemote == False ) :
-            users = methods.readData("users.json")
-            user = users[session_id]
-            user["exp"] += exp
-            user["weekly_exp"] += exp     
-            user["level"] = calculate_level(user["exp"] / 25)    
-            methods.writeData(users, "users.json")
+            updateLocally(exp)
         else:
             user = usersRemote[str(session_id)]
             newexp = exp + int(user["exp"])
             level = calculate_level(user["exp"] / 25)  
             methods.postRemote("updateexp", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
-
+            updateLocally(exp)
+            
         return exp 
 
 

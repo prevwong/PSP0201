@@ -46,22 +46,10 @@ def reset_after(days = 7):
 ##################
 #UI
 def show_ranking():
-    
-    #Initialize users JSON
 
-    url = "http://52.36.70.190:5002/public/"
-    # Read JSON data from url
-    error = 0;
-    try:
-        response = urllib.urlopen(url)
-        try:
-            users = json.loads(response.read())
-        except ValueError:
-            error = 1;
-    except IOError:
-        error = 1;
+    users = methods.readRemoteJson("public")
 
-    if ( error == 1 ) :
+    if ( users == False ) :
         users = methods.readData("users.json")
 
     ###UI positioning###

@@ -135,7 +135,7 @@ def loginUser():
 	name=request.form["name"]
 	print name, checkUser(name)
 	if ( checkUser(name) ): 
-		response = { "password" : getUser(name)["password"], "id": getUser(name)["id"], "name": getUser(name)["name"], "exp": getUser(name)["exp"], "weekly_exp" : getUser(name)["weekly_exp"], "level" : getUser(name)["level"] }
+		response = { "password" : getUser(name)["password"], "id": getUser(name)["id"], "name": getUser(name)["name"], "description": getUser(name)["description"], "exp": getUser(name)["exp"], "weekly_exp" : getUser(name)["weekly_exp"], "level" : getUser(name)["level"] }
 		return jsonify(response)
 	else: 
 		return jsonify({"error" : True})
