@@ -185,7 +185,7 @@ def calculate_results(questions, answers):
 
     def updateLocally(exp):
         users = methods.readData("users.json")
-        user = users[session_id]
+        user = users[str(session_id)]
         user["exp"] += exp
         user["weekly_exp"] += exp     
         user["level"] = calculate_level(user["exp"] / 25)    

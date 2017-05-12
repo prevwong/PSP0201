@@ -85,7 +85,7 @@ def login(username, password):
          tkMessageBox.showerror("Error","Please Try Again!")
       else:
             tkMessageBox.showinfo("Done","Login Successfully!")
-            saveUserLocally(i, username, password, data["description"], data["exp"], data["weekly_exp"], data["level"])
+            saveUserLocally(data["id"], username, password, data["description"], data["exp"], data["weekly_exp"], data["level"])
             LogWindow.destroy()
             RegWindow.destroy()
             profile.session_id = data["id"]
