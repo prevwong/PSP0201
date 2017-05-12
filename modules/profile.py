@@ -7,7 +7,7 @@ import os.path
 import threading
 import methods
 import quiz
-import Authentication
+import authentication
 import tkMessageBox
 #########################################
 # Variable Start here
@@ -273,6 +273,6 @@ def logout(name):
         message = "See you again, " + name + "!"
         tkMessageBox.showinfo("Thank you", message)
         root.destroy()
-        Authentication.show_window()
+        authentication.show_window()
 
     

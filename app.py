@@ -1,3 +1,3 @@
-from modules import Authentication
+from modules import authentication
 
-Authentication.show_window()
+authentication.show_window()

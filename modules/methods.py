@@ -27,6 +27,23 @@ def locateFile(filename):
         return temp_path + DATA_DIR
 
 
+def readRemoteJson(url):
+    url = "http://52.36.70.190:5002/" + str(url)
+    # Read JSON data from url
+    error = 0;
+    try:
+     response = urllib.urlopen(url)
+     try:
+        data = json.loads(response.read())
+     except ValueError:
+        error = 1;
+    except IOError:
+     error = 1;
+
+    if ( error == 1 ) :
+        return False;
+    else:
+        return data;
 
 def readOnlineJson(url):
     # Read JSON data from url
@@ -46,17 +63,17 @@ def readOnlineJson(url):
         return jsonData
 
 def readData(filename):
-        json_file = locateFile(filename)
-        if json_file.endswith(".json"):
+        requestedFile = locateFile(filename)
+        if requestedFile.endswith(".json"):
             print "hi"
-            with open(json_file, "r") as infile:
+            with open(requestedFile, "r") as jsonFile:
                 try:
-                    users = json.load(infile)
+                    data = json.load(jsonFile)
                 except ValueError:
-                    users = {}
-            return users
+                    data = {}
+            return data
         else:
-            return json_file
+            return requestedFile
 
 def writeData(data, filename):
         json_file = locateFile(filename)
@@ -93,7 +110,9 @@ def backupQuestions():
         with open('data/backup.json', 'w') as outfile:
                 json.dump(obj, outfile)
 
-def URLRequest(url, params):
+def postRemote(path, params):
+    url = "http://52.36.70.190:5002/" + path + "/"
+    print url
     data = urllib.urlencode(params)
     try:
         req = urllib2.Request(url, data)
@@ -103,8 +122,8 @@ def URLRequest(url, params):
         return None;
 
 def getUserData(session_id):
-    if (URLRequest("http://52.36.70.190:5002/user/", {"id" : session_id}) != None) :
-        data = URLRequest("http://52.36.70.190:5002/user/", {"id" : session_id})
+    if (postRemote("user", {"id" : session_id}) != None) :
+        data = postRemote("user", {"id" : session_id})
         return json.loads(data);
     else:
         data = readData("users.json");

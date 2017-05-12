@@ -48,7 +48,8 @@ def submit(username,password,password_confirmation):
          error = 1;
 
 
-      if ( error == 1 ) :
+      data = methods.readOnlineJson("usernames")
+      if ( data == False ) :
          '''
          for i in range (0,len(users)):
             if users[str(i)]["name"] == username:
@@ -81,7 +82,7 @@ def submit(username,password,password_confirmation):
             tkMessageBox.showerror("Error","Username:"+username+" has been taken")
 
          else:
-            newUser = methods.URLRequest("http://52.36.70.190:5002/adduser/", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+            newUser = methods.postRemote("adduser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
             users = methods.readData("users.json")
             users[json.loads(newUser)["id"]] = {"name" : username, "password" : encrypt(password), "description" : "Set your description", "exp" : 0, "weekly_exp" : 0, "level" : 1}
             methods.writeData(users, "users.json")
@@ -98,27 +99,22 @@ def Register():
         
 def login(username, password):
    
-   users = methods.readData("users.json") 
-
-   request = methods.URLRequest("http://52.36.70.190:5002/loginUser/", { "name" : username })
+   request = methods.postRemote("loginUser", { "name" : username })
 
    print request
    if ( request != None ):
-      response = json.loads(request);
-      print response
-      if ( ( "error" in response and response["error"] == True ) or decrypt(response["password"]) != password ):
+      data = json.loads(request);
+      if ( ( "error" in data and data["error"] == True ) or decrypt(data["password"]) != password ):
          tkMessageBox.showerror("Error","Please Try Again!")
       else:
             tkMessageBox.showinfo("Done","Login Successfully!")
-         
-
             LogWindow.destroy()
             RegWindow.destroy()
-            profile.session_id = response["id"]
+            profile.session_id = data["id"]
             profile.show_window()
-
    else:
       print "logging in locally"
+      users = methods.readData("users.json") 
       counter = 0;
       for i in users:
          counter = counter + 1

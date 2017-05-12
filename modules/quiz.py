@@ -5,7 +5,6 @@ import random
 import HTMLParser
 from Tkinter import *
 import ttk
-#import guiquizselection 
 import profile
 import methods
 
@@ -188,6 +187,7 @@ def calculate_results(questions, answers):
         exp = correct * 25
         url = "http://52.36.70.190:5002/public/"
         # Read JSON data from url
+        '''
         error = 0;
         try:
             response = urllib.urlopen(url)
@@ -197,20 +197,22 @@ def calculate_results(questions, answers):
                 error = 1;
         except IOError:
             error = 1;
+        '''
 
-        print "error", error;
-        if ( error == 1 ) :
-            user = methods.readData("users.json")[session_id]
+        usersRemote = methods.readRemoteJson("public")
+
+        if ( usersRemote == False ) :
+            users = methods.readData("users.json")
+            user = users[session_id]
             user["exp"] += exp
-            user["weeklyexp"] += exp     
+            user["weekly_exp"] += exp     
             user["level"] = calculate_level(user["exp"] / 25)    
             methods.writeData(users, "users.json")
         else:
-            print users;
-            user = users[str(session_id)]
+            user = usersRemote[str(session_id)]
             newexp = exp + int(user["exp"])
             level = calculate_level(user["exp"] / 25)  
-            methods.URLRequest("http://52.36.70.190:5002/updateexp/", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
+            methods.postRemote("updateexp", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
 
         return exp 
 
