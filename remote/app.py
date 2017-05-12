@@ -12,16 +12,20 @@ def get_db():
     return db
 
 def query_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    if ( rv ) :
-    	if one :
-    		return rv[0]
-    	else:
-    		return rv
-    else:
-    	return None;
+	try:
+	    cur = get_db().execute(query, args)
+	    rv = cur.fetchall()
+	    cur.close()
+	    if ( rv ) :
+	    	if one :
+	    		return rv[0]
+	    	else:
+	    		return rv
+	    else:
+	    	return None;
+	except:
+		print "Database query error"
+		return None;
 
 @app.teardown_appcontext
 def close_connection(exception):
