@@ -98,20 +98,29 @@ def checkUser(name, user_id = False):
 @app.route("/usernames/", methods=["GET"])
 def usernames():
 	users = []
-	for user in query_db("select * from users"):
-		print user["id"]
-		users.append(user["name"])
+	data = query_db("select * from users")
+	if data != None:
+		for user in data:
+			print user["id"]
+			users.append(user["name"])
 
-	all_users = { "users": users }
-	return jsonify(all_users)
+		response = { "users": users }
+	else:
+		response = { "error": True }
+
+	return jsonify(response)
 
 @app.route("/public/", methods=["GET"])
 def public():
 	users = {}
-	for user in query_db("select * from users"):
-		users[user["id"]] = { "name" : user["name"], "exp" : user["exp"], "weekly_exp" : user["weekly_exp"], "level" : user["level"] }
-
-	return jsonify(users);
+	data = query_db("select * from users")
+	if ( data != None ) :
+		for user in data:
+			users[user["id"]] = { "name" : user["name"], "exp" : user["exp"], "weekly_exp" : user["weekly_exp"], "level" : user["level"] }
+		response = users;
+	else:
+		response = { "error" : True }
+	return jsonify(response);
 
 @app.route("/loginUser/", methods=["POST"])
 def loginUser():
