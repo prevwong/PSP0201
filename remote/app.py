@@ -88,15 +88,17 @@ def getUser(name, user_id = False):
 		return query;
 
 def checkUser(name, user_id = False):
-	for user in query_db('select * from users'):
-		if name != False:
-			if user["name"] == name :
-				return True;
-				break
-		else:
-			if ( int(user_id) == user["id"] ) :
-				return True;
-				break;
+	data = query_db("select * from users")
+	if data != None:
+		for user in data:
+			if name != False:
+				if user["name"] == name :
+					return True;
+					break
+			else:
+				if ( int(user_id) == user["id"] ) :
+					return True;
+					break;
 	return False;
 
 @app.route("/usernames/", methods=["GET"])
