@@ -32,23 +32,7 @@ def submit(username,password,password_confirmation):
          tkMessageBox.showerror("Error","Both Passwords did not match. Try Again")
          return
 
-      
-      users = methods.readData("users.json")
-
-      url = "http://52.36.70.190:5002/usernames/"
-      # Read JSON data from url
-      error = 0;
-      try:
-         response = urllib.urlopen(url)
-         try:
-            data = json.loads(response.read())
-         except ValueError:
-            error = 1;
-      except IOError:
-         error = 1;
-
-
-      data = methods.readOnlineJson("usernames")
+      data = methods.readRemoteJson("usernames")
       if ( data == False ) :
          '''
          for i in range (0,len(users)):

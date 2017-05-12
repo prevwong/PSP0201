@@ -45,23 +45,6 @@ def readRemoteJson(url):
     else:
         return data;
 
-def readOnlineJson(url):
-    # Read JSON data from url
-    error = 0;
-    try:
-        response = urllib.urlopen(url)
-        try:
-            jsonData = json.loads(response.read())
-        except ValueError:
-            error = 1;
-    except IOError:
-        error = 1;
-
-    if ( error == 1 ) :
-        return False;
-    else:
-        return jsonData
-
 def readData(filename):
         requestedFile = locateFile(filename)
         if requestedFile.endswith(".json"):
