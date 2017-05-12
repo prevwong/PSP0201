@@ -21,7 +21,7 @@ def decrypt(string):
     
 def submit(username,password,password_confirmation):
 
-      '''
+      
       if len(username) <6:
          tkMessageBox.showerror("Error","Minimum length of username is 6")
          return
@@ -32,7 +32,7 @@ def submit(username,password,password_confirmation):
          tkMessageBox.showerror("Error","Both Passwords did not match. Try Again")
          return
 
-      '''
+      
       users = methods.readData("users.json")
 
       url = "http://35.166.173.190:5002/usernames/"
@@ -79,6 +79,7 @@ def submit(username,password,password_confirmation):
          if ( error == 1 ) :
             print "username has been taken"
             tkMessageBox.showerror("Error","Username:"+username+" has been taken")
+
          else:
             newUser = methods.URLRequest("http://35.166.173.190:5002/adduser/", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
             users = methods.readData("users.json")
@@ -96,7 +97,7 @@ def Register():
     LogWindow.withdraw()
         
 def login(username, password):
-
+   
    users = methods.readData("users.json") 
 
    request = methods.URLRequest("http://35.166.173.190:5002/loginUser/", { "name" : username })
@@ -207,5 +208,6 @@ def show_window():
 
 
         LogWindow.mainloop()
+        
 
-#submit("prev", "imgenev", "imgenev")
+
