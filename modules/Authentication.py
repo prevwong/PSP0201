@@ -35,7 +35,7 @@ def submit(username,password,password_confirmation):
       
       users = methods.readData("users.json")
 
-      url = "http://35.166.173.190:5002/usernames/"
+      url = "http://52.36.70.190:5002/usernames/"
       # Read JSON data from url
       error = 0;
       try:
@@ -81,7 +81,7 @@ def submit(username,password,password_confirmation):
             tkMessageBox.showerror("Error","Username:"+username+" has been taken")
 
          else:
-            newUser = methods.URLRequest("http://35.166.173.190:5002/adduser/", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+            newUser = methods.URLRequest("http://52.36.70.190:5002/adduser/", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
             users = methods.readData("users.json")
             users[json.loads(newUser)["id"]] = {"name" : username, "password" : encrypt(password), "description" : "Set your description", "exp" : 0, "weekly_exp" : 0, "level" : 1}
             methods.writeData(users, "users.json")
@@ -100,7 +100,7 @@ def login(username, password):
    
    users = methods.readData("users.json") 
 
-   request = methods.URLRequest("http://35.166.173.190:5002/loginUser/", { "name" : username })
+   request = methods.URLRequest("http://52.36.70.190:5002/loginUser/", { "name" : username })
 
    print request
    if ( request != None ):

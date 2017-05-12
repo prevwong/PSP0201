@@ -49,7 +49,7 @@ def show_ranking():
     
     #Initialize users JSON
 
-    url = "http://35.166.173.190:5002/public/"
+    url = "http://52.36.70.190:5002/public/"
     # Read JSON data from url
     error = 0;
     try:
