@@ -9,6 +9,7 @@ import methods
 import quiz
 import authentication
 import tkMessageBox
+from random import *
 #########################################
 # Variable Start here
 #########################################
@@ -259,8 +260,8 @@ def save_des():
 
 def random_ques():
     quiz.session_id = session_id
-    root.destroy()
-    quiz.quizUI(9,1) 
+    root.destroy();
+    quiz.quizUI(randint(9,32),1) 
     
 def play():
     quiz.session_id = session_id
