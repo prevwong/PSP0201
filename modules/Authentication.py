@@ -55,6 +55,7 @@ def submit(username,password,password_confirmation):
           # Save users profile locally as well
           saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
           tkMessageBox.showinfo("Done","Register Successfully!")
+          Back();
 
 def saveUserLocally(userId, username, password, description, exp, weekly_exp, level):
   # Save users profile locally as well
