@@ -110,8 +110,6 @@ def login(username, password):
                break;
             else:
                continue;
-         
-
 
 def show_window():
   try:
@@ -147,7 +145,7 @@ def show_window():
         submitButton = Button (RegWindow,text = "    Submit    ",command= lambda: submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()), bg="Pink",activebackground = "white",activeforeground ="black")
         backButton=Button(RegWindow,text ="    Back    ",command=Back,bg=ButtonColor,activebackground = "white",activeforeground ="black")
         registerButton=Button(LogWindow,text="    Register    ",command= Register,bg=ButtonColor,activebackground = "white",activeforeground="black")
-        loginButton = Button(LogWindow,text = "    Login    ",command= lambda: login(Log_Username.get(), Log_Password.get()),bg="Pink",activebackground = "white",activeforeground="black")
+        loginButton = Button(LogWindow,text = "    Login    ",command= lambda: login(Log_Username.get(), Log_Password.get()),bg="Pink",activebackground = "white",activeforeground="black")        
 
         #Adjust Lining LogWindow
         LogSpaceX1 = Label (LogWindow,text="                                 ",bg=FrameColor).grid(row=0,column=0)
@@ -161,7 +159,6 @@ def show_window():
 
         loginButton.grid(row=5,column=3)
         registerButton.grid(row=5,column=4)
-
 
         #Adjust Lining RegWindow
         RegSpaceX1 = Label (RegWindow,text="            ",bg=FrameColor).grid(row=0,column=0)
@@ -178,10 +175,9 @@ def show_window():
         submitButton.grid(row=6,column=3)
         backButton.grid(row=6,column=4)
 
-
+        LogWindow.bind('<Return>',lambda x : login(Log_Username.get(), Log_Password.get())); 
+        RegWindow.bind('<Return>',lambda x : submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()));
         LogWindow.mainloop()
+
   except:
     return False;
-        
-
-
