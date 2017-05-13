@@ -79,6 +79,7 @@ def readRemoteJson(url):
     url = "http://52.36.70.190:5002/" + str(url)
     error = 0;
 
+    print "Trying"
 
     try:
      # Send a HTTP request to url

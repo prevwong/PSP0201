@@ -37,25 +37,24 @@ def submit(username,password,password_confirmation):
       if ( data == False ) :
          tkMessageBox.showinfo("Error","Internet connection/Server down")
       else:
-         error = 0;
+        error = 0;
 
-         # If there are users currently existing in the remote database, check:
-         if ( data != None ) : 
-            users = data["users"]
-            for i in users:
-              if username == i :
-                 error = 1;
-                 break;
-            if ( error == 1 ) :
-              print "username has been taken"
-              tkMessageBox.showerror("Error","Username:"+username+" has been taken")
-
-         else:
-            # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
-            newUser = methods.postRemote("addUser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
-            # Save users profile locally as well
-            saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
-            tkMessageBox.showinfo("Done","Register Successfully!")
+        # If there are users currently existing in the remote database, check:
+        if ( data != None ) : 
+          users = data["users"]
+          for i in users:
+            if username == i :
+              error = 1;
+              break;
+          if ( error == 1 ) :
+            print "username has been taken"
+            tkMessageBox.showerror("Error","Username:"+username+" has been taken")
+        if ( error == 0 ):
+          # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
+          newUser = methods.postRemote("addUser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+          # Save users profile locally as well
+          saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
+          tkMessageBox.showinfo("Done","Register Successfully!")
 
 def saveUserLocally(userId, username, password, description, exp, weekly_exp, level):
   # Save users profile locally as well
