@@ -30,7 +30,7 @@ def locate_file(filename):
 def read_data(filename):
         requested_file = locate_file(filename)
         if requested_file.endswith(".json"):
-            print "hi"
+
             with open(requested_file, "r") as jsonFile:
                 try:
                     data = json.load(jsonFile)

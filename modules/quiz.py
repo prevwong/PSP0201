@@ -100,8 +100,7 @@ def retrieve(category, quantity):
         error = 1;
 
     if ( error == 1 ) :
-        with open('data/backup.json', 'r') as outfile:
-                jsonData = json.load(outfile)
+        jsonData = methods.read_data("backup.json")
         results = jsonData[str(category)][str(quantity)]
     else: 
         results = jsonData["results"]
@@ -179,11 +178,9 @@ def calculate_results(questions, answers):
 
 
     #The new window and the expcalculator starts here
-    scoreboardWindow = Tk()
-    scoreboardWindow.title("Scoreboard")
-    scoreboardWindow.geometry("700x400")
+    scoreboardWindow = methods.define_window("Scoreboard","700x400")
 
-    def updateLocally(exp):
+    def update_locally(exp):
         users = methods.read_data("users.json")
         user = users[str(session_id)]
         user["exp"] += exp
@@ -193,7 +190,6 @@ def calculate_results(questions, answers):
 
     def expadder(correct):   
         exp = correct * 25
-        url = "http://52.36.70.190:5002/public/"
         # Read JSON data from url
         '''
         error = 0;
@@ -210,13 +206,13 @@ def calculate_results(questions, answers):
         usersRemote = methods.read_remote_json("public")
 
         if ( usersRemote == False ) :
-            updateLocally(exp)
+            update_locally(exp)
         else:
             user = usersRemote[str(session_id)]
             newexp = exp + int(user["exp"])
             level = calculate_level(user["exp"] / 25)  
             methods.post_remote("updateExp", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
-            updateLocally(exp)
+            update_locally(exp)
             
         return exp 
 
