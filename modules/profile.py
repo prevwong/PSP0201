@@ -261,6 +261,7 @@ def random_ques():
     quiz.session_id = session_id
     root.destroy()
     quiz.quizUI(9,1) 
+    
 def play():
     quiz.session_id = session_id
     root.destroy()

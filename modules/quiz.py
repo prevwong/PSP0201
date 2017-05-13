@@ -102,6 +102,7 @@ def retrieve(category, quantity):
     if ( error == 1 ) :
         with open('data/backup.json', 'r') as outfile:
                 jsonData = json.load(outfile)
+        print category, quantity
         results = jsonData[str(category)][str(quantity)]
     else: 
         results = jsonData["results"]

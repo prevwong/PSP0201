@@ -1,1 +1,1 @@
-{"1": {"weekly_exp": 325, "name": "prevwong", "level": 2, "exp": 325, "password": "j[ij_d]'()", "description": "I am Prev!"}, "3": {"weekly_exp": 0, "name": "testuser", "level": 1, "exp": 0, "password": "j[ij_d]'()", "description": "Set your description"}}
+{"1": {"weekly_exp": 400, "description": "I am Prev!", "level": 2, "exp": 400, "password": "j[ij_d]'()", "name": "prevwong"}, "3": {"weekly_exp": 0, "description": "Set your description", "level": 1, "exp": 0, "password": "j[ij_d]'()", "name": "testuser"}}
