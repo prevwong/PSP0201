@@ -242,9 +242,7 @@ def selection():
                "Science & Nature":17,"Computers":18,"Mathematics":19,"Mythology":20,"Sports":21,"Geography":22,"History":23,"Politics":24,"Art":25,
                "Celebrities":26,"Animals":27,"Vehicles":28,"Comics":29,"Gadgets":30,"Japanese Anime & Manga":31,"Cartoon & Animations":32}
                
-    master = Tk()
-    master.title("Pick your choice.")
-    master.geometry("400x300")
+    master = methods.defineWindow("Pick your choice","400x300")
     
 
     category_var = StringVar(master)

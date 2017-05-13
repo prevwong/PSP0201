@@ -116,9 +116,7 @@ def show_window():
   try:
         global LogWindow, RegWindow
         #First Window
-        LogWindow = Tk()
-        LogWindow.title("AskTrivia")
-        LogWindow.geometry("500x300")
+        LogWindow = methods.defineWindow("AskTrivia","500x300")
         FrameColor = "light blue"
         LogWindow.configure(bg=FrameColor)
         Welcome = Label(LogWindow,text = "Welcome to\n AskTrivia",bg=FrameColor,font="Arial")
@@ -129,9 +127,7 @@ def show_window():
         Log_Password = Entry(LogWindow,show = "*")
 
         #SecondWindow
-        RegWindow = Tk()
-        RegWindow.title("Register")
-        RegWindow.geometry("500x300")
+        RegWindow = methods.defineWindow("Register", "500x300")
         RegWindow.configure(bg = FrameColor)
         RegWord = Label (RegWindow,text="REGISTER",font = "Arial",bg=FrameColor)
 

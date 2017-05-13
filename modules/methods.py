@@ -48,6 +48,13 @@ def writeData(data, filename):
 def defineWindow(title = "AskTrivia", geometry = "640x480"):
         window = Tkinter.Tk()
         window.title(title)
+        window.update_idletasks()
+        coordinates = geometry.split("x")
+        width = int(coordinates[0])
+        height = int(coordinates[1])
+        x = (window.winfo_screenwidth() // 2) - (width // 2)
+        y = (window.winfo_screenheight() // 2) - (height // 2)
+        geometry = ("{}+{}+{}".format(geometry,x,y))
         window.geometry(geometry)
         return window
 
