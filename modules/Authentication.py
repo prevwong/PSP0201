@@ -32,7 +32,7 @@ def submit(username,password,password_confirmation):
          tkMessageBox.showerror("Error","Both Passwords did not match. Try Again")
          return
 
-      data = methods.readRemoteJson("usernames")
+      data = methods.read_remote_json("usernames")
       # If connection to remote server failed due to internet failure or error in request
       if ( data == False ) :
          tkMessageBox.showinfo("Error","Internet connection/Server down")
@@ -51,16 +51,16 @@ def submit(username,password,password_confirmation):
             tkMessageBox.showerror("Error","Username:"+username+" has been taken")
         if ( error == 0 ):
           # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
-          newUser = methods.postRemote("addUser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+          newUser = methods.post_remote("addUser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
           # Save users profile locally as well
           saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
           tkMessageBox.showinfo("Done","Register Successfully!")
 
 def saveUserLocally(userId, username, password, description, exp, weekly_exp, level):
   # Save users profile locally as well
-  users = methods.readData("users.json")
+  users = methods.read_data("users.json")
   users[str(userId)] = {"name" : username, "password" : encrypt(password), "description" : description, "exp" : exp, "weekly_exp" : weekly_exp, "level" : level}
-  methods.writeData(users, "users.json")
+  methods.write_data(users, "users.json")
 
 def Back():
     RegWindow.withdraw()
@@ -72,7 +72,7 @@ def Register():
         
 def login(username, password):
    
-   request = methods.postRemote("loginUser", { "name" : username })
+   request = methods.post_remote("loginUser", { "name" : username })
 
    print request
 
@@ -92,7 +92,7 @@ def login(username, password):
    else:
       # If request to remote server failed, log in locally
       print "logging in locally"
-      users = methods.readData("users.json") 
+      users = methods.read_data("users.json") 
       counter = 0;
       for i in users:
          counter = counter + 1
@@ -116,7 +116,7 @@ def show_window():
   try:
         global LogWindow, RegWindow
         #First Window
-        LogWindow = methods.defineWindow("AskTrivia","500x300")
+        LogWindow = methods.define_window("AskTrivia","500x300")
         FrameColor = "light blue"
         LogWindow.configure(bg=FrameColor)
         Welcome = Label(LogWindow,text = "Welcome to\n AskTrivia",bg=FrameColor,font="Arial")
@@ -127,7 +127,7 @@ def show_window():
         Log_Password = Entry(LogWindow,show = "*")
 
         #SecondWindow
-        RegWindow = methods.defineWindow("Register", "500x300")
+        RegWindow = methods.define_window("Register", "500x300")
         RegWindow.configure(bg = FrameColor)
         RegWord = Label (RegWindow,text="REGISTER",font = "Arial",bg=FrameColor)
 

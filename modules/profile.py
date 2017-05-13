@@ -24,7 +24,7 @@ animaterun = True;
 #########################################
 PROFILE_HEIGHT = 90;
 PROFILE_WIDTH = 90;
-PROFILE_PIC_LINK = methods.readData("pic/profile.gif");  # Initialization in SetPathTitleLabel = "";
+PROFILE_PIC_LINK = methods.read_data("pic/profile.gif");  # Initialization in SetPathTitleLabel = "";
 Profile_Pic = "";
 NameLabel = "";
 DesTitleLabel = "";
@@ -63,9 +63,9 @@ def show_window():
         global framenumber;
         #SetPath();
         #ReadData(DATAFILEPATH);
-        root = methods.defineWindow("AskTrivia", "640x480")
+        root = methods.define_window("AskTrivia", "640x480")
         root.minsize(height = 0,width = 100);
-        data = methods.getUserData(session_id);
+        data = methods.get_user_data(session_id);
         name = data['name'];
         level = data['level'];
         description = data['description'];
@@ -245,16 +245,16 @@ def animate(object,filename,speed = 0.1):
 
 def save_des():
     """Get the description from box and write it into the file"""
-    users = methods.readData("users.json")
+    users = methods.read_data("users.json")
     # Get the input
     temp = DesLabel.get(1.0,END);
     # Remove the \n and edit the data
     des = temp.replace("\n","");
     users[str(session_id)]["description"] = des;
     # Write it into the json file
-    methods.writeData(users, "users.json")
+    methods.write_data(users, "users.json")
 
-    methods.postRemote("updateDescription", { "id" : session_id, "description" : des })
+    methods.post_remote("updateDescription", { "id" : session_id, "description" : des })
 
 
 def random_ques():

@@ -27,10 +27,10 @@ def sort_exp(typeof, users):
 
 # The reset weekly exp function, resets the weekly exp to 0
 def reset_weeklyexp():    
-    users = methods.readData("users.json")
+    users = methods.read_data("users.json")
     for i in range(0, len(users)):
         users[str(i)]["weeklyexp"] = 0  
-    methods.writeData(users, "users.json")
+    methods.write_data(users, "users.json")
     
 # This reset at functions, take the argument of what time to reset, and add 7 days consequently for future resets
 def reset_after(days = 7):
@@ -47,14 +47,14 @@ def reset_after(days = 7):
 #UI
 def show_ranking():
 
-    users = methods.readRemoteJson("public")
+    users = methods.read_remote_json("public")
 
     if ( users == False ) :
-        users = methods.readData("users.json")
+        users = methods.read_data("users.json")
 
     ###UI positioning###
     
-    root = methods.defineWindow("AskTrivia Leaderboard", "320x400")
+    root = methods.define_window("AskTrivia Leaderboard", "320x400")
     root.rowconfigure(0, weight = 1)
     root.rowconfigure(1, weight = 1)
     root.rowconfigure(2, weight = 1)

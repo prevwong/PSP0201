@@ -6,11 +6,11 @@ import urllib2
 import urllib
 
 
-def loopList(items):
+def loop_list(items):
 	for i in items:
 		print i
 
-def centerWindow(root):
+def center_window(root):
 	root.withdraw()
 	root.update_idletasks()  # Update "requested size" from geometry manager
 
@@ -19,7 +19,7 @@ def centerWindow(root):
 	root.geometry("+%d+%d" % (x, y))
 	root.deiconify()
 
-def locateFile(filename):
+def locate_file(filename):
         DATA_DIR = "data/" + filename
         current_dir = os.path.dirname(__file__)
         temp_path = os.path.dirname(current_dir) + '/'
@@ -27,25 +27,25 @@ def locateFile(filename):
         return temp_path + DATA_DIR
 
 
-def readData(filename):
-        requestedFile = locateFile(filename)
-        if requestedFile.endswith(".json"):
+def read_data(filename):
+        requested_file = locate_file(filename)
+        if requested_file.endswith(".json"):
             print "hi"
-            with open(requestedFile, "r") as jsonFile:
+            with open(requested_file, "r") as jsonFile:
                 try:
                     data = json.load(jsonFile)
                 except ValueError:
                     data = {}
             return data
         else:
-            return requestedFile
+            return requested_file
 
-def writeData(data, filename):
-        json_file = locateFile(filename)
+def write_data(data, filename):
+        json_file = locate_file(filename)
         with open(json_file, "w") as outfile:
                 json.dump(data, outfile)
 
-def defineWindow(title = "AskTrivia", geometry = "640x480"):
+def define_window(title = "AskTrivia", geometry = "640x480"):
         window = Tkinter.Tk()
         window.title(title)
         window.update_idletasks()
@@ -58,7 +58,7 @@ def defineWindow(title = "AskTrivia", geometry = "640x480"):
         window.geometry(geometry)
         return window
 
-def backupQuestions():
+def backup_questions():
         categorynum = {"Random":9,"Books":10,"Film":11,"Music":12,"Musicals & Theatres":13,"Television":14,"Video Games":15,"Board Games":16,
                "Science & Nature":17,"Computers":18,"Mathematics":19,"Mythology":20,"Sports":21,"Geography":22,"History":23,"Politics":24,"Art":25,
                "Celebrities":26,"Animals":27,"Vehicles":28,"Comics":29,"Gadgets":30,"Japanese Anime & Manga":31,"Cartoon & Animations":32}
@@ -82,7 +82,7 @@ def backupQuestions():
         with open('data/backup.json', 'w') as outfile:
                 json.dump(obj, outfile)
 
-def readRemoteJson(url):
+def read_remote_json(url):
     url = "http://52.36.70.190:5002/" + str(url)
     error = 0;
 
@@ -111,7 +111,7 @@ def readRemoteJson(url):
     else:
         return data;
 
-def postRemote(path, params):
+def post_remote(path, params):
     url = "http://52.36.70.190:5002/" + path + "/"
     # Converts parms{} into a series of key=value pairs to create a sucessful POST request. Eg: {key1: value1, key2:value2} => "key1=value1&key2=value2"
     data = urllib.urlencode(params)
@@ -125,16 +125,16 @@ def postRemote(path, params):
     except:
         return None;
 
-def getUserData(session_id):
+def get_user_data(session_id):
     # If sending a POST request to user/ with session_id succeeded:
-    if (postRemote("user", {"id" : session_id}) != None) :
+    if (post_remote("user", {"id" : session_id}) != None) :
         # Send a POST request to grab user's data
-        data = postRemote("user", {"id" : session_id})
+        data = post_remote("user", {"id" : session_id})
         # Return a Dictionary from JSON object
         return json.loads(data);
     else:
         # If failed, just read the local users.json file
-        data = readData("users.json");
+        data = read_data("users.json");
         return data[str(session_id)];
 
 #URLRequest("http://localhost:5002/adduser/", { "name" : "prevwong", "password" : "imgeneva", "description" : "Hello world!" })

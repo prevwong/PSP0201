@@ -82,7 +82,7 @@ def quizUI(category, number):
     submitBtn.pack(side="right")
         
     # Center Window
-    methods.centerWindow(quizWindow);
+    methods.center_window(quizWindow);
     mainloop()
 
 
@@ -184,12 +184,12 @@ def calculate_results(questions, answers):
     scoreboardWindow.geometry("700x400")
 
     def updateLocally(exp):
-        users = methods.readData("users.json")
+        users = methods.read_data("users.json")
         user = users[str(session_id)]
         user["exp"] += exp
         user["weekly_exp"] += exp     
         user["level"] = calculate_level(user["exp"] / 25)    
-        methods.writeData(users, "users.json")
+        methods.write_data(users, "users.json")
 
     def expadder(correct):   
         exp = correct * 25
@@ -207,7 +207,7 @@ def calculate_results(questions, answers):
             error = 1;
         '''
 
-        usersRemote = methods.readRemoteJson("public")
+        usersRemote = methods.read_remote_json("public")
 
         if ( usersRemote == False ) :
             updateLocally(exp)
@@ -215,7 +215,7 @@ def calculate_results(questions, answers):
             user = usersRemote[str(session_id)]
             newexp = exp + int(user["exp"])
             level = calculate_level(user["exp"] / 25)  
-            methods.postRemote("updateExp", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
+            methods.post_remote("updateExp", { "id" : session_id, "exp" : newexp, "weekly_exp" : newexp, "level" : level})
             updateLocally(exp)
             
         return exp 
@@ -242,7 +242,7 @@ def selection():
                "Science & Nature":17,"Computers":18,"Mathematics":19,"Mythology":20,"Sports":21,"Geography":22,"History":23,"Politics":24,"Art":25,
                "Celebrities":26,"Animals":27,"Vehicles":28,"Comics":29,"Gadgets":30,"Japanese Anime & Manga":31,"Cartoon & Animations":32}
                
-    master = methods.defineWindow("Pick your choice","400x300")
+    master = methods.define_window("Pick your choice","400x300")
     
 
     category_var = StringVar(master)
