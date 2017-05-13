@@ -53,11 +53,11 @@ def submit(username,password,password_confirmation):
           # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
           newUser = methods.post_remote("addUser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
           # Save users profile locally as well
-          saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
+          save_user_locally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
           tkMessageBox.showinfo("Done","Register Successfully!")
           Back();
 
-def saveUserLocally(userId, username, password, description, exp, weekly_exp, level):
+def save_user_locally(userId, username, password, description, exp, weekly_exp, level):
   # Save users profile locally as well
   users = methods.read_data("users.json")
   users[str(userId)] = {"name" : username, "password" : encrypt(password), "description" : description, "exp" : exp, "weekly_exp" : weekly_exp, "level" : level}
@@ -85,7 +85,7 @@ def login(username, password):
          tkMessageBox.showerror("Error","Please Try Again!")
       else:
             tkMessageBox.showinfo("Done","Login Successfully!")
-            saveUserLocally(data["id"], username, password, data["description"], data["exp"], data["weekly_exp"], data["level"])
+            save_user_locally(data["id"], username, password, data["description"], data["exp"], data["weekly_exp"], data["level"])
             LogWindow.destroy()
             RegWindow.destroy()
             profile.session_id = data["id"]
@@ -181,3 +181,10 @@ def show_window():
 
   except:
     return False;
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> a19ec827ba86c17a370cc293cc2e7f491d565acc
