@@ -100,6 +100,7 @@ def retrieve(category, quantity):
         error = 1;
 
     if ( error == 1 ) :
+
         jsonData = methods.read_data("backup.json")
         results = jsonData[str(category)][str(quantity)]
     else: 
