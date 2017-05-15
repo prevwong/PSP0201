@@ -112,18 +112,19 @@ def read_remote_json(url):
         return data;
 
 def post_remote(path, params):
-    url = "http://52.36.70.190:5002/" + path + "/"
-    # Converts parms{} into a series of key=value pairs to create a sucessful POST request. Eg: {key1: value1, key2:value2} => "key1=value1&key2=value2"
-    data = urllib.urlencode(params)
     try:
+        url = "http://52.36.70.190:5002/" + path + "/"
+        # Converts parms{} into a series of key=value pairs to create a sucessful POST request. Eg: {key1: value1, key2:value2} => "key1=value1&key2=value2"
+        data = urllib.urlencode(params)
         # Create an URL request
-        req = urllib2.Request(url, data)
+        req = urllib2.Request(url, data=data)
         # Opens the URL, the output is a file-like object
         response = urllib2.urlopen(req)
         # Calling the .read() method of urlopen returns the content of requested URL ( most likely a string )
         return response.read()
     except:
         return None;
+
 
 def get_user_data(session_id):
     # If sending a POST request to user/ with session_id succeeded:

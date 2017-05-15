@@ -73,6 +73,7 @@ def Register():
         
 def login(username, password):
    
+   print "sending request"
    request = methods.post_remote("loginUser", { "name" : username })
 
    print request
@@ -175,8 +176,8 @@ def show_window():
         submitButton.grid(row=6,column=3)
         backButton.grid(row=6,column=4)
 
-        LogWindow.bind('<Return>',lambda x : login(Log_Username.get(), Log_Password.get())); 
-        RegWindow.bind('<Return>',lambda x : submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()));
+        LogWindow.bind('<Return>',lambda x: login(Log_Username.get(), Log_Password.get())); 
+        RegWindow.bind('<Return>',lambda x: submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()));
         LogWindow.mainloop()
 
   except:
