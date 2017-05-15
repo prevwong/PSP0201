@@ -2,7 +2,7 @@ from Tkinter import *
 import json
 import os
 import ttk
-from datetime import datetime
+from datetime import datetime, timedelta
 from threading import Timer
 from multiprocessing import Process
 import time
@@ -28,13 +28,13 @@ def sort_exp(typeof, users):
 # The reset weekly exp function, resets the weekly exp to 0
 def reset_weeklyexp():    
     users = methods.read_data("users.json")
-    for i in range(0, len(users)):
+    for i in range(1, len(users)):
         users[str(i)]["weeklyexp"] = 0  
     methods.write_data(users, "users.json")
     
 # This reset at functions, take the argument of what time to reset, and add 7 days consequently for future resets
 def reset_after(days = 7):
-    reset_time = datetime(2017, 04, 30, 00, 00, 00)
+    reset_time = datetime(2017, 04, 30, 00, 00, 00) + timedelta(days)
     if datetime.now() >= reset_time:
         excess_days = int(str(datetime.now() - reset_time).split(" ")[0])
         if excess_days % 7 == 0:
@@ -111,5 +111,6 @@ def show_ranking():
     root.mainloop()
     
 reset_after()
+show_ranking()
 
 
