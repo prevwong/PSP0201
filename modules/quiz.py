@@ -144,7 +144,7 @@ def close():
 
 
 def completed_quiz(questions, answers):
-    submitBtn.config(text="Again!",command = close);
+    submitBtn.config(text="Back to profile",command = close);
     calculate_results(questions, answers);
 
 def calculate_level(correct, level = 1):
@@ -263,6 +263,11 @@ def selection():
         master.destroy();
         quizUI(category, number)
 
-    Button(master, text = "Play!", command = getinput).pack(side=BOTTOM,pady= 50)
+    def back():
+        master.destroy()
+        profile.show_window()
+
+    Button(master, text = "Back", command = back).pack(side=BOTTOM, pady = 10)
+    Button(master, text = "Play!", command = getinput).pack(side=BOTTOM, pady=50)
     master.mainloop()
 
