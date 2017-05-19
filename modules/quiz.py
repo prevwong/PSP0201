@@ -35,19 +35,19 @@ def on_mousescroll(event):
 def quizUI(category, number):
     global canvas,submitBtn,quizWindow,rdioButtonsTmp;
 
-    quizWindow = Tk()
-    quizWindow.title("AskTrivia")
-    quizWindow.resizable(width=False, height=False)
-    
     # Retrieve the list of questions 
     questions = retrieve(category, number)
     answers={}
 
-    # Creating a canvas to allow scrolling
+    height = 600
     if len(questions) == 1:
-        canvas = Canvas(quizWindow, width = 520, height = 300)
-    else:
-        canvas = Canvas(quizWindow, width=520, height=600)
+        height = 300
+
+    quizWindow = methods.define_window("AskTrivia", "520x{}".format(height))
+    quizWindow.resizable(width=False, height=False)    
+
+    # Creating a canvas to allow scrolling
+    canvas = Canvas(quizWindow, width = 520, height = height)
     canvas.pack(side=LEFT, padx=30)
 
     # Scrollbar
@@ -57,7 +57,7 @@ def quizUI(category, number):
     canvas.bind('<Configure>', on_configure)
     canvas.bind_all('<MouseWheel>', on_mousescroll)
 
-    frame = Frame(canvas, width=600, pady=40);
+    frame = Frame(canvas, width=520, pady=40);
     frame.grid()
     canvas.create_window((0,0), window=frame, anchor='nw')
 
@@ -84,11 +84,8 @@ def quizUI(category, number):
             rdioButtonsTmp[i][j].pack(side="top", anchor=W)
     
     submitBtn = Button(frame, text ="Submit", command = lambda: completed_quiz(questions, answers));
-    submitBtn.pack(side="right")
+    submitBtn.pack(anchor=E)
         
-    # Center Window
-    methods.center_window(quizWindow);
-    mainloop()
 
 
 def retrieve(category, quantity):
