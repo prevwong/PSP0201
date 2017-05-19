@@ -7,6 +7,7 @@ from Tkinter import *
 import ttk
 import profile
 import methods
+import platform
 
 parser = HTMLParser.HTMLParser()
 canvas = "";
@@ -25,7 +26,11 @@ def on_configure(event):
 
 def on_mousescroll(event):
     # enable scrolling; defined speed
-    canvas.yview_scroll( -1 * (event.delta), "units")
+    operating_system = platform.system()
+    factor = 1
+    if ( operating_system == "Windows " ) :
+        factor = 120 
+    canvas.yview_scroll( -1 * (event.delta / factor), "units")
 
 def quizUI(category, number):
     global canvas,submitBtn,quizWindow,rdioButtonsTmp;
