@@ -62,11 +62,11 @@ def update_user(user_id, params):
 
 		for i in params :
 			counter = counter + 1
-			query += i + "=" + params[i]
+			query += i + "=" + str(params[i])
 			if (counter != len(params)) :
 				query += ","
 			query += " "
-		query += "WHERE id=" + user_id
+		query += "WHERE id=" + str(user_id)
 		# So it will be like UPDATE users SET key1=value1, key2 value2 WHERE id=3
 		con.execute(query);
 		con.commit()
@@ -227,4 +227,4 @@ def user():
 if __name__ == "__main__":
 	with app.app_context():
 		# Run flask run on machine's IP on port 5002
-		app.run(host="0.0.0.0", port=5002)
+		app.run(port=5002)
