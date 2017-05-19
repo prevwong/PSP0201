@@ -6,19 +6,6 @@ import urllib2
 import urllib
 
 
-def loop_list(items):
-	for i in items:
-		print i
-
-def center_window(root):
-	root.withdraw()
-	root.update_idletasks()  # Update "requested size" from geometry manager
-
-	x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
-	y = (root.winfo_screenheight() - root.winfo_reqheight()) / 2
-	root.geometry("+%d+%d" % (x, y))
-	root.deiconify()
-
 def locate_file(filename):
         DATA_DIR = "data/" + filename
         current_dir = os.path.dirname(__file__)
@@ -46,8 +33,11 @@ def write_data(data, filename):
                 json.dump(data, outfile)
 
 def define_window(title = "AskTrivia", geometry = "640x480"):
+
         window = Tkinter.Tk()
+        window.withdraw()
         window.title(title)
+        
         window.update_idletasks()
         coordinates = geometry.split("x")
         width = int(coordinates[0])
@@ -56,6 +46,7 @@ def define_window(title = "AskTrivia", geometry = "640x480"):
         y = (window.winfo_screenheight() // 2) - (height // 2)
         geometry = ("{}+{}+{}".format(geometry,x,y))
         window.geometry(geometry)
+        window.deiconify()
         return window
 
 def backup_questions():
