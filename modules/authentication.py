@@ -6,6 +6,11 @@ import methods
 import profile
 import urllib
 import urllib2
+import hashlib
+
+def password_hash(string):
+        hash_obj = hashlib.sha256(string.encode())
+        return hash_obj.hexdigest()
 
 def encrypt(string):
         result = ""
@@ -51,7 +56,7 @@ def submit(username,password,password_confirmation):
             tkMessageBox.showerror("Error","Username:"+username+" has been taken")
         if ( error == 0 ):
           # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
-          newUser = methods.post_remote("addUser", { "name" : username, "password" : encrypt(password), "description" : "Set your description" })
+          newUser = methods.post_remote("addUser", { "name" : username, "password" : password_hash(password), "description" : "Set your description" })
           # Save users profile locally as well
           saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
           tkMessageBox.showinfo("Done","Register Successfully!")
@@ -60,7 +65,7 @@ def submit(username,password,password_confirmation):
 def saveUserLocally(userId, username, password, description, exp, weekly_exp, level):
   # Save users profile locally as well
   users = methods.read_data("users.json")
-  users[str(userId)] = {"name" : username, "password" : encrypt(password), "description" : description, "exp" : exp, "weekly_exp" : weekly_exp, "level" : level}
+  users[str(userId)] = {"name" : username, "password" : password_hash(password), "description" : description, "exp" : exp, "weekly_exp" : weekly_exp, "level" : level}
   methods.write_data(users, "users.json")
 
 def Back():
@@ -82,7 +87,7 @@ def login(username, password):
    if ( request != None ):
       data = json.loads(request);
       # If there are errors ( caused by non-existing username ) and password does not match the password stored in the database:
-      if ( ( "error" in data and data["error"] == True ) or decrypt(data["password"]) != password ):
+      if ( ( "error" in data and data["error"] == True ) or data["password"] != password_hash(password) ):
          tkMessageBox.showerror("Error","Please Try Again!")
       else:
             tkMessageBox.showinfo("Done","Login Successfully!")
@@ -98,7 +103,7 @@ def login(username, password):
       counter = 0;
       for i in users:
          counter = counter + 1
-         if users[str(i)]["name"] == username and decrypt(users[str(i)]["password"])==password:
+         if users[str(i)]["name"] == username and users[str(i)]["password"]== password_hash(password):
             tkMessageBox.showinfo("Done","Login Successfully!")
             LogWindow.destroy()
             RegWindow.destroy()
