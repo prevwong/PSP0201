@@ -80,21 +80,21 @@ def update_user(user_id, params):
 
 # @function for getting user data; by default is to use the user's name to retrieve data, but you can also use user_id
 def getUser(name, user_id = False):
-	if ( user_id == False ) :
-		# If user_id is False (default)
-		# Run query by selecting user's name
-		query = query_db("select * from users WHERE name=(?)", (name,), True);
-	else:
+	if ( user_id ) :
 		# If user_id is True
-		# Run query by selecting user's name
-		query = query_db("select * from users WHERE id=(?)", (user_id,), True);
+		# Run data by selecting user's id
+		data = query_db("select * from users WHERE id=(?)", (user_id,), True);
+	else:
+		# If user_id is False (default)
+		# Run data by selecting user's name
+		data = query_db("select * from users WHERE name=(?)", (name,), True);
 
-	if query == None:
+	if data == None:
 		# Error, return false
 		return False;
 	else:
 		# Sucess, return data
-		return query;
+		return data;
 
 # @function for checking if User Exist
 def checkUser(name, user_id = False):
@@ -140,7 +140,7 @@ def addUser():
     return jsonify(response);
 
 @app.route('/updateExp/', methods=['POST'])
-def updateexp():
+def updateExp():
 	user_id=request.form["id"]
 	exp = request.form["exp"]
 	weekly_exp = request.form["weekly_exp"];
