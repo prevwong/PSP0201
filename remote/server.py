@@ -65,11 +65,11 @@ def update_user(user_id, params):
 
 		for i in params :
 			counter = counter + 1
-			query += i + "=" + params[i]
+			query += str(i) + "=" + str(params[i])
 			if (counter != len(params)) :
 				query += ","
 			query += " "
-		query += "WHERE id=" + user_id
+		query += "WHERE id=" + str(user_id)
 		# So it will be like UPDATE users SET key1=value1, key2 value2 WHERE id=3
 		con.execute(query);
 		con.commit()

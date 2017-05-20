@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, url_for, g, jsonify
-from server import app, get_db, query_db, update_user
+from flask import Flask
+from server import app, query_db, update_user
 
 def reset_weekly():
 	users = {}
@@ -9,14 +9,14 @@ def reset_weekly():
 		for user in data:
 			try:
 				# Update the user's exp, given their id
-				update_user(user["id"], {"weekly_exp" : 0})
+				update_user(user["id"], {"weekly_exp" : "0"})
 			except:
 				# error, print an error message in the console
-				print "Error, cannot reset weekly exp"
-		response = {"success" : True };
+				print "SQL Error, cannot reset weekly exp"
+		print "Successfully reset every user's weekly_exp"
 	else:
 		# Error
-		response = { "error" : True }
+		print "Server Error, cannot reset weekly exp"
 
 if __name__ == "__main__":
 	with app.app_context():
