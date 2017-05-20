@@ -131,35 +131,6 @@ def show_window():
         animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
 
         root.mainloop();
-def choose_picture():
-        """Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""
-        global framenumber;
-        global frame_count;
-        global Profile_Pic;
-        global PROFILE_PIC_LINK;
-        global animaterun;
-
-        animaterun = False;
-        filename = askopenfilename(title='Profile Picture',
-                                                 filetypes= [('gif', '*.gif')] ,
-                                                initialdir="/");
-        if(filename != ""):
-                # Reset the frame count
-                frame_count = 0;
-                dest = os.path.dirname(PROFILE_PIC_LINK);
-                # Rmove the old profile picture file
-                os.remove(PROFILE_PIC_LINK);
-                # Copy the new one to the directory
-                copy(filename,dest);
-                # Rename the file to profile.gif
-                destpicname = dest + "\\" + filename.split('/')[-1];
-                os.rename(destpicname,PROFILE_PIC_LINK);
-                # Update the framenumber of new profile gif
-                framenumber = get_frame(PROFILE_PIC_LINK);
-        
-        animaterun = True;
-        animate(Profile_Pic,PROFILE_PIC_LINK,0.1);
-
 
 def choose_picture():
     """Popup a file window to ask user to choose a gif file, and change it to the Profile_Pic"""
