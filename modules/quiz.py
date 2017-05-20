@@ -28,7 +28,7 @@ def on_mousescroll(event):
     # enable scrolling; defined speed
     operating_system = platform.system()
     factor = 1
-    if ( operating_system == "Windows " ) :
+    if ( operating_system == "Windows" ) :
         factor = 120 
     canvas.yview_scroll( -1 * (event.delta / factor), "units")
 
