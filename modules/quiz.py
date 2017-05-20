@@ -39,15 +39,16 @@ def quizUI(category, number):
     questions = retrieve(category, number)
     answers={}
 
-    height = 600
+    height = 700
     if len(questions) == 1:
         height = 300
 
-    quizWindow = methods.define_window("AskTrivia", "520x{}".format(height))
+    quizWindow = Tk()
+    quizWindow.title("AskTrivia")
     quizWindow.resizable(width=False, height=False)    
 
     # Creating a canvas to allow scrolling
-    canvas = Canvas(quizWindow, width = 520, height = height)
+    canvas = Canvas(quizWindow, width=520, height=height)
     canvas.pack(side=LEFT, padx=30)
 
     # Scrollbar
@@ -57,9 +58,8 @@ def quizUI(category, number):
     canvas.bind('<Configure>', on_configure)
     canvas.bind_all('<MouseWheel>', on_mousescroll)
 
-    frame = Frame(canvas, width=520, pady=40);
-    frame.grid()
-    canvas.create_window((0,0), window=frame, anchor='nw')
+    frame = Frame(canvas, width=520)
+    canvas.create_window((4,4), window=frame, anchor="nw")
 
     rdioButtonsTmp = {};
 
@@ -67,7 +67,7 @@ def quizUI(category, number):
         options = questions[i]["options"]
 
         Label(frame, 
-          wraplength=500,
+          wraplength=450,
           text= parser.unescape(questions[i]["question"]),
           justify = LEFT,
           padx = 10).pack(side="top", pady=20, anchor=W)
@@ -85,7 +85,16 @@ def quizUI(category, number):
     
     submitBtn = Button(frame, text ="Submit", command = lambda: completed_quiz(questions, answers));
     submitBtn.pack(anchor=E)
+
+    quizWindow.withdraw()
+    quizWindow.update_idletasks()  # Update "requested size" from geometry manager
+
+    x = (quizWindow.winfo_screenwidth() - quizWindow.winfo_reqwidth()) / 2
+    y = (quizWindow.winfo_screenheight() - quizWindow.winfo_reqheight()) / 2
+    quizWindow.geometry("+%d+%d" % (x, y))
+    quizWindow.deiconify()
         
+   
 
 
 def retrieve(category, quantity):
