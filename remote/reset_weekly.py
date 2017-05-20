@@ -1,5 +1,5 @@
 from flask import Flask
-from server import app, query_db, update_user
+from server import app, get_db, query_db, update_user
 
 def reset_weekly():
 	users = {}
@@ -13,10 +13,10 @@ def reset_weekly():
 				print "Successfully reset every user's weekly_exp"
 			except:
 				# error, print an error message in the console
-				print "Error, cannot reset weekly exp"
+				print "No Data Error, cannot reset weekly exp"
 	else:
 		# Error
-		print "Error, cannot reset weekly exp"
+		print "Server Error, cannot reset weekly exp"
 
 if __name__ == "__main__":
 	with app.app_context():
