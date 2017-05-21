@@ -70,6 +70,7 @@ def update_user(user_id, params):
 				query += ","
 			query += " "
 		query += "WHERE id=" + str(user_id)
+		print query
 		# So it will be like UPDATE users SET key1=value1, key2 value2 WHERE id=3
 		con.execute(query);
 		con.commit()
@@ -228,15 +229,7 @@ def user():
 		response = { "error" : True }
 	return jsonify(response);
 
-def removeUser(name):
-	con = sql.connect(DATABASE)
-	cur = con.cursor()
-	# Run and execute SQL query; Insert name, password and description with respective values into the users table
-	cur.execute("DELETE from users WHERE name = (?)", (name))
-	con.commit()
-	print "Deleted user", name
-
 if __name__ == "__main__":
 	with app.app_context():
 		# Run flask run on machine's IP on port 5002
-		app.run(host="0.0.0.0", port=5002)
+		app.run(port=5000)

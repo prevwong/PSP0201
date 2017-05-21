@@ -7,7 +7,8 @@ def password_hash(string):
     return hash_obj.hexdigest()
 
 def convert_to_sha():
-    update_user(1, {"password": password_hash("testing123")})
- 
+    update_user("1", {"password": str(password_hash("testing123"))})
 
-convert_to_sha()
+if __name__ == "__main__":
+	with app.app_context():
+		convert_to_sha();
