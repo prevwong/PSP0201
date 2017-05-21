@@ -228,6 +228,14 @@ def user():
 		response = { "error" : True }
 	return jsonify(response);
 
+def removeUser(name):
+	con = sql.connect(DATABASE)
+	cur = con.cursor()
+	# Run and execute SQL query; Insert name, password and description with respective values into the users table
+	cur.execute("DELETE from users WHERE name = (?)", (name))
+	con.commit()
+	print "Deleted user", name
+
 if __name__ == "__main__":
 	with app.app_context():
 		# Run flask run on machine's IP on port 5002
