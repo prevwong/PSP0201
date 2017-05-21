@@ -18,18 +18,19 @@ def sort_exp(typeof, users):
     sorted_array = sorted(users, key=lambda x: int((users[str(x)][typeof])), reverse=True)
     i = 1
     info_array = {}
-    for id in sorted_array:
+    while i <= len(sorted_array):
         info_array[i]={}
-        info_array[i]["name"] = users[id]["name"]
-        info_array[i][typeof] = users[id][typeof]
+        info_array[i]["name"] = users[sorted_array[i-1]]["name"]
+        info_array[i][typeof] = users[sorted_array[i-1]][typeof]
         i = i + 1
     return info_array
 
 # The reset weekly exp function, resets the weekly exp to 0
 def reset_weeklyexp():    
     users = methods.read_data("users.json")
-    for i in range(1, len(users)):
-        users[str(i)]["weeklyexp"] = 0  
+    for i in users:
+        users[i]["weekly_exp"] = 0
+    
     methods.write_data(users, "users.json")
     
 # This reset at functions, take the argument of what time to reset, and add 7 days consequently for future resets
