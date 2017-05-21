@@ -12,18 +12,6 @@ def password_hash(string):
         hash_obj = hashlib.sha256(string.encode())
         return hash_obj.hexdigest()
 
-def encrypt(string):
-        result = ""
-        for i in xrange(0,len(string)):
-                result += chr(ord(string[i]) - 10);
-        return result
-
-def decrypt(string):
-        result = ""
-        for i in xrange(0,len(string)):
-                result += chr(ord(string[i]) + 10);
-        return result
-    
 def submit(username,password,password_confirmation):
 
       
@@ -58,11 +46,11 @@ def submit(username,password,password_confirmation):
           # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
           newUser = methods.post_remote("addUser", { "name" : username, "password" : password_hash(password), "description" : "Set your description" })
           # Save users profile locally as well
-          saveUserLocally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
+          save_user_locally(json.loads(newUser)["id"], username, password, "Set your description", 0, 0, 1)
           tkMessageBox.showinfo("Done","Register Successfully!")
           Back();
 
-def saveUserLocally(userId, username, password, description, exp, weekly_exp, level):
+def save_user_locally(userId, username, password, description, exp, weekly_exp, level):
   # Save users profile locally as well
   users = methods.read_data("users.json")
   users[str(userId)] = {"name" : username, "password" : password_hash(password), "description" : description, "exp" : exp, "weekly_exp" : weekly_exp, "level" : level}
@@ -91,7 +79,7 @@ def login(username, password):
          tkMessageBox.showerror("Error","Please Try Again!")
       else:
             tkMessageBox.showinfo("Done","Login Successfully!")
-            saveUserLocally(data["id"], username, password, data["description"], data["exp"], data["weekly_exp"], data["level"])
+            save_user_locally(data["id"], username, password, data["description"], data["exp"], data["weekly_exp"], data["level"])
             LogWindow.destroy()
             RegWindow.destroy()
             profile.session_id = data["id"]
@@ -127,9 +115,9 @@ def show_window():
         Welcome = Label(LogWindow,text = "Welcome to\n AskTrivia",bg=FrameColor,font="Arial")
 
         LogUser = Label(LogWindow,text = "Username:",bg=FrameColor,font="Arial")
-        Log_Username = Entry(LogWindow)
+        log_username = Entry(LogWindow)
         LogPass = Label (LogWindow,text="Password:",bg=FrameColor,font="Arial")
-        Log_Password = Entry(LogWindow,show = "*")
+        log_password = Entry(LogWindow,show = "*")
 
         #SecondWindow
         RegWindow = methods.define_window("Register", "500x300")
@@ -137,21 +125,21 @@ def show_window():
         RegWord = Label (RegWindow,text="REGISTER",font = "Arial",bg=FrameColor)
 
         RegUser = Label (RegWindow,text="Username: ",bg=FrameColor,font="Arial")
-        Reg_Username = Entry(RegWindow)
+        reg_username = Entry(RegWindow)
         RegPass = Label(RegWindow,text="Password: ",bg=FrameColor,font="Arial")
-        Reg_Password = Entry(RegWindow,show="*")
+        reg_password = Entry(RegWindow,show="*")
         ConfirmationPass = Label(RegWindow,text="Password Confirmation: ",bg=FrameColor,font="Arial")
-        Confirmation_Pass = Entry(RegWindow,show="*")
+        confirmation_pass = Entry(RegWindow,show="*")
         RegWindow.withdraw()
         users = {}                
         
         #Button
         ButtonColor = "light green"
 
-        submitButton = Button (RegWindow,text = "    Submit    ",command= lambda: submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()), bg="Pink",activebackground = "white",activeforeground ="black")
+        submitButton = Button (RegWindow,text = "    Submit    ",command= lambda: submit(reg_username.get(), reg_password.get(), confirmation_pass.get()), bg="Pink",activebackground = "white",activeforeground ="black")
         backButton=Button(RegWindow,text ="    Back    ",command=Back,bg=ButtonColor,activebackground = "white",activeforeground ="black")
         registerButton=Button(LogWindow,text="    Register    ",command= Register,bg=ButtonColor,activebackground = "white",activeforeground="black")
-        loginButton = Button(LogWindow,text = "    Login    ",command= lambda: login(Log_Username.get(), Log_Password.get()),bg="Pink",activebackground = "white",activeforeground="black")        
+        loginButton = Button(LogWindow,text = "    Login    ",command= lambda: login(log_username.get(), log_password.get()),bg="Pink",activebackground = "white",activeforeground="black")        
 
         #Adjust Lining LogWindow
         LogSpaceX1 = Label (LogWindow,text="                                 ",bg=FrameColor).grid(row=0,column=0)
@@ -159,9 +147,9 @@ def show_window():
         LogSpaceY2 = Label (LogWindow,text=" ",bg=FrameColor).grid(row=4,column=0)
         Welcome.grid(row=0,column=4)
         LogUser.grid(row=2,column=3)
-        Log_Username.grid(row=2,column=4)
+        log_username.grid(row=2,column=4)
         LogPass.grid(row=3,column=3)
-        Log_Password.grid(row=3,column=4)
+        log_password.grid(row=3,column=4)
 
         loginButton.grid(row=5,column=3)
         registerButton.grid(row=5,column=4)
@@ -173,16 +161,16 @@ def show_window():
         RegSpaceY3 = Label (RegWindow,text=" ",bg=FrameColor).grid(row=5,column=0)
         RegWord.grid(row=0,column=4)
         RegUser.grid(row=2,column=3)
-        Reg_Username.grid(row=2,column=4)
+        reg_username.grid(row=2,column=4)
         RegPass.grid(row=3,column=3)
-        Reg_Password.grid(row=3,column=4)
+        reg_password.grid(row=3,column=4)
         ConfirmationPass.grid(row=4,column=3)
-        Confirmation_Pass.grid(row=4,column=4)
+        confirmation_pass.grid(row=4,column=4)
         submitButton.grid(row=6,column=3)
         backButton.grid(row=6,column=4)
 
-        LogWindow.bind('<Return>',lambda x: login(Log_Username.get(), Log_Password.get())); 
-        RegWindow.bind('<Return>',lambda x: submit(Reg_Username.get(), Reg_Password.get(), Confirmation_Pass.get()));
+        LogWindow.bind('<Return>',lambda x: login(log_username.get(), log_password.get())); 
+        RegWindow.bind('<Return>',lambda x: submit(reg_username.get(), reg_password.get(), confirmation_pass.get()));
         LogWindow.mainloop()
 
   except:

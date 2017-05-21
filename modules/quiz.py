@@ -270,7 +270,10 @@ def selection():
 
     def getinput():
         category = category_var.get()
-        category = categorynum[category]
+        if category == "Random":
+            category = random.randint(9,32)
+        else:
+            category = categorynum[category]
         number = number_var.get()
         master.destroy();
         quizUI(category, number)
