@@ -94,6 +94,7 @@ def quizUI(category, number):
     quizWindow.geometry("+%d+%d" % (x, y))
     quizWindow.deiconify()
         
+    mainloop()
    
 
 

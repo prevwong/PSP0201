@@ -105,12 +105,13 @@ def read_remote_json(url):
 def post_remote(path, params):
     try:
         url = "http://52.36.70.190:5002/" + path + "/"
-        # Converts parms{} into a series of key=value pairs to create a sucessful POST request. Eg: {key1: value1, key2:value2} => "key1=value1&key2=value2"
+        # Converts params{} into a series of key=value pairs to create a sucessful POST request. Eg: {key1: value1, key2:value2} => "key1=value1&key2=value2"
         data = urllib.urlencode(params)
         # Create an URL request
         req = urllib2.Request(url, data=data)
         # Opens the URL, the output is a file-like object
         response = urllib2.urlopen(req)
+        print "Getting response..."
         # Calling the .read() method of urlopen returns the content of requested URL ( most likely a string )
         return response.read()
     except:
@@ -119,6 +120,7 @@ def post_remote(path, params):
 
 def get_user_data(session_id):
     # If sending a POST request to user/ with session_id succeeded:
+    print "Getting user data"
     if (post_remote("user", {"id" : session_id}) != None) :
         # Send a POST request to grab user's data
         data = post_remote("user", {"id" : session_id})

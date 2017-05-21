@@ -176,7 +176,8 @@ def usernames():
 	data = query_db("select * from users")
 	if data != None:
 		# If no error
-		for user in data:
+		for i in range(0, len(data)):
+			user = data[i]
 			# Add each user's name into the users[]
 			users.append(user["name"])
 		# Create a response dictionary containing users[]
