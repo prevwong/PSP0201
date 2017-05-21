@@ -117,7 +117,6 @@ def post_remote(path, params):
     except:
         return None;
 
-
 def get_user_data(session_id):
     # If sending a POST request to user/ with session_id succeeded:
     print "Getting user data"
@@ -130,7 +129,3 @@ def get_user_data(session_id):
         # If failed, just read the local users.json file
         data = read_data("users.json");
         return data[str(session_id)];
-
-#URLRequest("http://localhost:5002/adduser/", { "name" : "prevwong", "password" : "imgeneva", "description" : "Hello world!" })
-
-#print URLRequest("http://localhost:5002/usernames/", {})
