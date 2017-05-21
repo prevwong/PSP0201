@@ -232,4 +232,4 @@ def user():
 if __name__ == "__main__":
 	with app.app_context():
 		# Run flask run on machine's IP on port 5002
-		app.run(port=5000)
+		app.run(host="0.0.0.0", port=5002)
