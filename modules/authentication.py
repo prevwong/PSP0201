@@ -41,7 +41,7 @@ def submit(username,password,password_confirmation):
               break;
           if ( error == 1 ) :
             print "username has been taken"
-            tkMessageBox.showerror("Error","Username:"+username+" has been taken")
+            tkMessageBox.showerror("Error","Username: "+username+" has been taken")
         if ( error == 0 ):
           # Send a POST request to addUser/ with parameters: name, password, description. These parameters will be stored in the remote database.
           newUser = methods.post_remote("addUser", { "name" : username, "password" : password_hash(password), "description" : "Set your description" })
